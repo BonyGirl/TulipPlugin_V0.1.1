@@ -104,9 +104,9 @@ bool RouteAnalysis::run(){
     
     const ib::entity_t target_node = entities_map.at(nodes_guid[1]);
     
-    unsigned int count_hops = fabric->count_hops(source_node,target_node);
+    int myhops = fabric->count_hops(source_node,target_node);
 
-    cout<<"The Real Hops between the source and the target is: "<<count_hops<<endl;
+    cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
 
     if(pluginProgress)
     {
