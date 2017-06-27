@@ -73,6 +73,8 @@ bool RouteAnalysis::run(){
     vector<ib::guid_t> nodes_guid;
 
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
+    cout<<"test"<<endl;
+    
     int count = 0;
     while(selections->hasNext()){
         const tlp::node & tmp = selections->next();
@@ -83,6 +85,7 @@ bool RouteAnalysis::run(){
             return false;
         }
 
+        cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
         //According to ib_port.h, typedef uint64_t (guid_t) : convert string to uint64_t
         nodes_guid.push_back(std::strtoull(getGuid->getNodeStringValue(tmp).c_str(),NULL,0));
     }
