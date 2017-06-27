@@ -99,15 +99,16 @@ bool RouteAnalysis::run(){
 
     
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
-    if (pluginProgress) {
+    
+    const ib::entity_t & source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
+    
+     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(3, STEPS);
-        cout<<"test123"<<endl;
+        cout<<"test124"<<endl;
     }
     
-    const ib::entity_t &source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
-    
-    const ib::entity_t &target_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[1]).c_str(), NULL, 0));
+    const ib::entity_t & target_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[1]).c_str(), NULL, 0));
     
     unsigned int myhops = fabric->count_hops(source_node,target_node);
     
