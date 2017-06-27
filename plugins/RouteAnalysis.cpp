@@ -70,7 +70,7 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    vector<const tlp::node> nodes_guid;
+    vector<tlp::node> nodes_guid;
 
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
     
