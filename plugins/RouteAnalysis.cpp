@@ -100,11 +100,11 @@ bool RouteAnalysis::run(){
     
     const ib::fabric_t::entities_t & entities_map = fabric->get_entities();
     
-    const ib::entity_t source_node = entities_map.at(nodes_guid[0]);
+    const ib::entity_t &source_node = entities_map.at(nodes_guid[0]);
     
-    const ib::entity_t target_node = entities_map.at(nodes_guid[1]);
+    const ib::entity_t &target_node = entities_map.at(nodes_guid[1]);
     
-    int myhops = fabric->count_hops(source_node,target_node);
+    unsigned int myhops = fabric->count_hops(source_node,target_node);
 
     cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
 
