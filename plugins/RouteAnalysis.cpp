@@ -70,7 +70,7 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    vector<const ib::guid_t> nodes_guid;
+    vector<const tlp::node> nodes_guid;
 
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
     
@@ -86,7 +86,7 @@ bool RouteAnalysis::run(){
 
         cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
         //According to ib_port.h, typedef uint64_t (guid_t) : convert string to uint64_t
-        nodes_guid.push_back(std::strtoull(getGuid->getNodeStringValue(tmp).c_str(),NULL,0));
+        nodes_guid.push_back(tmp);
     }
     //const entities_t & get_entities() { return entities; }
     //@brief get map of all entities on fabric
@@ -105,9 +105,9 @@ bool RouteAnalysis::run(){
         cout<<"test123"<<endl;
     }
     
-    const ib::entity_t &source_node = entities_map.at(nodes_guid[0]);
+    const ib::entity_t &source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
     
-    const ib::entity_t &target_node = entities_map.at(nodes_guid[1]);
+    const ib::entity_t &target_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[1]).c_str(), NULL, 0));
     
     unsigned int myhops = fabric->count_hops(source_node,target_node);
     
