@@ -98,7 +98,7 @@ bool RouteAnalysis::run(){
     }
 
     
-    const ib::fabric_t::entities_t & entities_map = fabric->get_entities();
+    const std::map<ib::guid_t, ib::entity_t> & entities_map = fabric->get_entities();
     
     const ib::entity_t &source_node = entities_map.at(nodes_guid[0]);
     
