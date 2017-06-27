@@ -98,7 +98,7 @@ bool RouteAnalysis::run(){
     }
 
     
-    const entities_t &entities_map = fabric->get_entities();
+    const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(3, STEPS);
