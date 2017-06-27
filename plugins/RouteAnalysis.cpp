@@ -70,7 +70,7 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    vector<ib::guid_t> nodes_guid;
+    vector<const ib::guid_t> nodes_guid;
 
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
     
@@ -98,19 +98,18 @@ bool RouteAnalysis::run(){
     }
 
     
-    const std::map<ib::guid_t, ib::entity_t> & entities_map = fabric->get_entities();
+    const entities_t &entities_map = fabric->get_entities();
+    if (pluginProgress) {
+        pluginProgress->setComment("Found path source and target");
+        pluginProgress->progress(3, STEPS);
+        cout<<"test123"<<endl;
+    }
     
     const ib::entity_t &source_node = entities_map.at(nodes_guid[0]);
     
     const ib::entity_t &target_node = entities_map.at(nodes_guid[1]);
     
     unsigned int myhops = fabric->count_hops(source_node,target_node);
-
-    if (pluginProgress) {
-        pluginProgress->setComment("Found path source and target");
-        pluginProgress->progress(3, STEPS);
-        cout<<"test123"<<endl;
-    }
     
     cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
 
