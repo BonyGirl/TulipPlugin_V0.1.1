@@ -106,6 +106,12 @@ bool RouteAnalysis::run(){
     
     unsigned int myhops = fabric->count_hops(source_node,target_node);
 
+    if (pluginProgress) {
+        pluginProgress->setComment("Found path source and target");
+        pluginProgress->progress(3, STEPS);
+        cout<<"test123"<<endl;
+    }
+    
     cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
 
     if(pluginProgress)
