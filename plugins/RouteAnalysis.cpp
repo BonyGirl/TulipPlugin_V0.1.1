@@ -73,7 +73,6 @@ bool RouteAnalysis::run(){
     vector<ib::guid_t> nodes_guid;
 
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
-    cout<<"test"<<endl;
     
     int count = 0;
     while(selections->hasNext()){
@@ -98,16 +97,16 @@ bool RouteAnalysis::run(){
         pluginProgress->progress(2,STEPS);
     }
 
-    cout<<"test2"<<endl;
+    
     const ib::fabric_t::entities_t & entities_map = fabric->get_entities();
-    cout<<"test2"<<endl;
+    
     const ib::entity_t source_node = entities_map.at(nodes_guid[0]);
-    cout<<"test2"<<endl;
+    
     const ib::entity_t target_node = entities_map.at(nodes_guid[1]);
-    cout<<"test2"<<endl;
+    
     unsigned int count_hops = fabric->count_hops(source_node,target_node);
-cout<<"test2"<<endl;
-    cout<<"The Real Hops between the source: "<<nodes_guid[0]<<" and the target: "<<nodes_guid[1]<<" is "<<count_hops<<endl;
+
+    cout<<"The Real Hops between the source and the target is: "<<count_hops<<endl;
 
     if(pluginProgress)
     {
