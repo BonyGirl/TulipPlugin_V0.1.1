@@ -112,14 +112,7 @@ bool RouteAnalysis::run(){
     
     //entity_t& entity_t::forward(fabric_t& fabric, const entity_t& target)
     ib::entity_t* current=const_cast<ib::entity_t*>(&target_node);
-    while(true){
-        cout<<current->guid<<endl;
-        if(current->guid==source_node.guid)
-            break;
-  
-        const ib::entity_t *next = &(current->forward(*fabric, *current));
-        current = const_cast<ib::entity_t*>(next);
-    }
+    cout<< current->forward(*fabric, *current).guid<<endl;
     
     // unsigned int myhops = fabric->count_hops(source_node,target_node);
 
