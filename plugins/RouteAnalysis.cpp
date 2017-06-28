@@ -84,7 +84,7 @@ bool RouteAnalysis::run(){
             return false;
         }
 
-        cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
+        //cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
         //According to ib_port.h, typedef uint64_t (guid_t) : convert string to uint64_t
         nodes_guid.push_back(tmp);
     }
@@ -111,10 +111,10 @@ bool RouteAnalysis::run(){
     }
     
     //entity_t& entity_t::forward(fabric_t& fabric, const entity_t& target)
-    ib::entity_t* current=const_cast<ib::entity_t*>(&source_node);
+    ib::entity_t* current=const_cast<ib::entity_t*>(&target_node);
     while(true){
         cout<<current->guid<<endl;
-        if(current->guid==target_node.guid)
+        if(current->guid==source_node.guid)
             break;
   
         const ib::entity_t *next = &(current->forward(*fabric, *current));
