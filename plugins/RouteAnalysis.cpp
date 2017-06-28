@@ -114,6 +114,9 @@ bool RouteAnalysis::run(){
     ib::entity_t* current=const_cast<ib::entity_t*>(&source_node);
     while(true){
         cout<<current->guid<<endl;
+        if(current->guid==target_node.guid)
+            break;
+  
         const ib::entity_t *next = &(current->forward(*fabric, *current));
         current = const_cast<ib::entity_t*>(next);
     }
