@@ -100,7 +100,7 @@ bool RouteAnalysis::run(){
     
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
     
-    ib::entity_t & source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
+    const ib::entity_t & source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
     const ib::entity_t & target_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[1]).c_str(), NULL, 0));
     
     if (pluginProgress) {
@@ -111,10 +111,11 @@ bool RouteAnalysis::run(){
     }
     
     //entity_t& entity_t::forward(fabric_t& fabric, const entity_t& target)
+    ib::entity_t* current=const_cast<ib::entity_t*>(&source_node);
     while(true){
-        cout<<source_node.guid<<endl;
-        const ib::entity_t &temp = ib::entity_t::forward(fabric, source_node);
-        source_node = temp;
+        cout<<current->guid<<endl;
+        const ib::entity_t *next = &(current->forward(*fabric, *current));
+        current = const_cast<ib::entity_t*>(next);
     }
     
     // unsigned int myhops = fabric->count_hops(source_node,target_node);
