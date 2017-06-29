@@ -16,29 +16,6 @@
 #include "ibautils/ib_port.h"
 #include "ibautils/regex.h"
 
-using namespace std;
-using namespace tlp;
-
-PLUGIN(RouteAnalysis)
-
-static const char * paramHelp[]={
-
-HTML_HELP_OPEN() \
-HTML_HELP_DEF("type","String")\
-HTML_HELP_DEF("values","print the routing path")\
-HTML_HELP_DEF("default","print the routing path")\
-HTML_HELP_BODY() \
-HTML_HELP_CLOSE()
-
-};
-
-static const string IMPORT_TYPE_STRING=  "print the routing path";
-
-RouteAnalysis::RouteAnalysis(tlp::PluginContext *context)
-: tlp::Algorithm(context){
-    addInParameter<tlp::StringCollection>("Test",paramHelp[0],IMPORT_TYPE_STRING);
-}
-
 namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
@@ -53,6 +30,7 @@ bool RouteAnalysis::run(){
     }
 
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
+    assert(fabric);
 
     if(!fabric)
     {
@@ -72,16 +50,48 @@ bool RouteAnalysis::run(){
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
     vector<tlp::node> nodes_guid;
 
-    tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
-    const ib::fabric_t::entities_t &entities_mymap = fabric->get_entities();
-    
+    tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
+
+    int count = 0;
+     
     while(selections->hasNext()){
-        const tlp::node &mynode = selections->next();
-        nodes_guid.push_back(mynode);
+        const tlp::node & tmp = selections->next();
+        count++;
+        if(count>2){
+            if(pluginProgress)
+                pluginProgress->setError("More than two nodes are selected! Please just choose source and target nodes");
+            return false;
+        }
+
+        cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
+        //According to ib_port.h, typedef uint64_t (guid_t) : convert string to uint64_t
+        nodes_guid.push_back(tmp);
     }
+    //const entities_t & get_entities() { return entities; }
+    //@brief get map of all entities on fabric
+    // @return entities map reference
+
+    if(pluginProgress){
+        pluginProgress->setComment("Found path source and target");
+        pluginProgress->progress(2,STEPS);
+    }
+
+
+    const ib::fabric_t::entities_t *entities_map = fabric->get_entities();
     
-    const ib::entity_t & source_node = entities_mymap.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid.front()).c_str(),NULL,0));
-   cout<<source_node.guid<<endl;
+    const ib::entity_t & source_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[0])),NULL,0));
+    const ib::entity_t & target_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[1])),NULL,0));
+
+    if (pluginProgress) {
+        pluginProgress->setComment("Found path source and target");
+        pluginProgress->progress(3, STEPS);
+        cout<<target_node.guid<<endl;
+        cout<<source_node.guid<<endl;
+    }
+
+    unsigned int myhops = fabric->count_hops(source_node,target_node);
+
+    cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
 
     if(pluginProgress)
     {
