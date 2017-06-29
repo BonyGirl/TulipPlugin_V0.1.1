@@ -75,7 +75,7 @@ bool RouteAnalysis::run(){
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_mymap = fabric->get_entities();
     
-    while(selectBool->hasNext()){
+    while(selections->hasNext()){
         const tlp::node &mynode = selectBool->next();
         nodes_guid.push_back(mynode);
     }
@@ -84,7 +84,7 @@ bool RouteAnalysis::run(){
     
     ib::entity_t* current = const_cast<ib::entity_t*>(source_node);
     current = &(current->forward(*fabric, *current));
-    cout<<current.guid<<endl;
+    cout<<current->guid<<endl;
 
     if(pluginProgress)
     {
