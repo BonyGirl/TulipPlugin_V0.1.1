@@ -80,7 +80,7 @@ bool RouteAnalysis::run(){
         nodes_guid.push_back(mynode);
     }
     
-    const ib::entity_t & source_node = entities_mymap.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid.front()),NULL,0));
+    const ib::entity_t & source_node = entities_mymap.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid.front()).c_str(),NULL,0));
     
     ib::entity_t* current = const_cast<ib::entity_t*>(&source_node);
     current = &(current->forward(*fabric, *current));
