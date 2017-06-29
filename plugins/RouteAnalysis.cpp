@@ -70,51 +70,21 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    vector<tlp::node> nodes_guid;
+    vector<const tlp::node> nodes_guid;
 
-    tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
+    tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
+    const ib::fabric_t::entities_t &entities_mymap = fabric->get_entities();
     
-    int count = 0;
-    while(selections->hasNext()){
-        const tlp::node & tmp = selections->next();
-        count++;
-        if(count>2){
-            if(pluginProgress)
-                pluginProgress->setError("More than two nodes are selected! Please just choose source and target nodes");
-            return false;
-        }
-
-        //cout<<std::strtoull(getGuid->getNodeStringValue(tmp).c_str(), NULL, 0)<<endl;
-        //According to ib_port.h, typedef uint64_t (guid_t) : convert string to uint64_t
-        nodes_guid.push_back(tmp);
-    }
-    //const entities_t & get_entities() { return entities; }
-    //@brief get map of all entities on fabric
-    // @return entities map reference
-
-    if(pluginProgress){
-        pluginProgress->setComment("Found path source and target");
-        pluginProgress->progress(2,STEPS);
-    }
-
-    
-    const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
-    
-    const ib::entity_t & source_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[0]).c_str(), NULL, 0));
-    const ib::entity_t & target_node = entities_map.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid[1]).c_str(), NULL, 0));
-    
-    if (pluginProgress) {
-        pluginProgress->setComment("Found path source and target");
-        pluginProgress->progress(3, STEPS);
-        //cout<<target_node.guid<<endl;
-        //cout<<source_node.guid<<endl;
+    while(selectBool->hasNext()){
+        const tlp::node &mynode = selectBool->next();
+        nodes_guid.push_back(mynode);
     }
     
-    //entity_t& entity_t::forward(fabric_t& fabric, const entity_t& target)
-    ib::entity_t* current=const_cast<ib::entity_t*>(&target_node);
-    cout<< current->forward(*fabric, *current).guid<<endl;
+    const ib::entity_t & source_node = entities_mymap.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid.front()),NULL,0));
     
-    // unsigned int myhops = fabric->count_hops(source_node,target_node);
+    ib::entity_t* current = const_cast<ib::entity_t*>(source_node);
+    current = &(current->forward(*fabric, *current));
+    cout<<current.guid<<endl;
 
     if(pluginProgress)
     {
