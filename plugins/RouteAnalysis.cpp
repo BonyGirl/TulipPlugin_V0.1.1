@@ -81,10 +81,7 @@ bool RouteAnalysis::run(){
     }
     
     const ib::entity_t & source_node = entities_mymap.at(std::strtoull(getGuid->getNodeStringValue(nodes_guid.front()).c_str(),NULL,0));
-    
-    ib::entity_t* current = const_cast<ib::entity_t*>(&source_node);
-    current = &(current->forward(*fabric, *current));
-    cout<<current->guid<<endl;
+   cout<<source_node.guid<<endl;
 
     if(pluginProgress)
     {
