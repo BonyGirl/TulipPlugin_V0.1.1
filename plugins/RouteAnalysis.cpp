@@ -84,17 +84,19 @@ bool RouteAnalysis::run(){
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
     
 
-    const ib::entity_t & source_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
-    const ib::entity_t & target_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0));
+    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
+    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(2, STEPS);
-        cout<<target_node.guid<<endl;
-        cout<<source_node.guid<<endl;
+        //cout<<target_node.guid<<endl;
+        //cout<<source_node.guid<<endl;
+        if(source_node.uft == NULL)
+            cout<<"there is no uft"<<endl;
     }
 
-    unsigned int myhops = fabric->count_hops(source_node,target_node);
+    //unsigned int myhops = fabric->count_hops(source_node,target_node);
 
     cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
     if(pluginProgress)
