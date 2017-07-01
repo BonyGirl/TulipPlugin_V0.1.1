@@ -97,7 +97,7 @@ bool RouteAnalysis::run(){
         for(ib::entity_t::unicast_forwarding_table_t::const_iterator it = source_node.uft.begin(); it != source_node.uft.end(); ++it)
         {
             cout<<it->first<<"    "<<it->second<<endl;
-            flag = ture;
+            flag = true;
         }
         if(flag)
             cout<<"sucessful"<<endl;
