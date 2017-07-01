@@ -79,8 +79,8 @@ bool RouteAnalysis::run(){
 
     const ib::fabric_t::entities_t *entities_map = fabric->get_entities();
     
-    const ib::entity_t & source_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[0])),NULL,0));
-    const ib::entity_t & target_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[1])),NULL,0));
+    const ib::entity_t & source_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
+    const ib::entity_t & target_node = entities_map.at(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0));
 
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
