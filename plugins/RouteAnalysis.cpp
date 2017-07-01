@@ -92,13 +92,15 @@ bool RouteAnalysis::run(){
         pluginProgress->progress(2, STEPS);
         //cout<<target_node.guid<<endl;
         //cout<<source_node.guid<<endl;
-        if(source_node.uft == NULL)
-            cout<<"there is no uft"<<endl;
+        //typedef std::map<lid_t, port_num_t> unicast_forwarding_table_t;
+        for(ib::entity_t::unicast_forwarding_table_t::iterator it = source_node.uft.begin(); it != source_node.uft.end(); ++it)
+            cout<<it->first<<"    "<<it->second<<endl;
+    
     }
 
     //unsigned int myhops = fabric->count_hops(source_node,target_node);
-
-    cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
+    //cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
+    
     if(pluginProgress)
     {
         pluginProgress->setComment("Print the Real hops");
