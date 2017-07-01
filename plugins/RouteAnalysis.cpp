@@ -93,7 +93,7 @@ bool RouteAnalysis::run(){
         //cout<<target_node.guid<<endl;
         //cout<<source_node.guid<<endl;
         //typedef std::map<lid_t, port_num_t> unicast_forwarding_table_t;
-        for(ib::entity_t::unicast_forwarding_table_t::iterator it = source_node.uft.begin(); it != source_node.uft.end(); ++it)
+        for(ib::entity_t::unicast_forwarding_table_t::const_iterator it = source_node.uft.begin(); it != source_node.uft.end(); ++it)
             cout<<it->first<<"    "<<it->second<<endl;
     
     }
