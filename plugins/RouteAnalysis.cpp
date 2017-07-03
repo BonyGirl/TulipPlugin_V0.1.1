@@ -89,32 +89,33 @@ bool RouteAnalysis::run(){
     
     ib::lid_t target_lid = target_node.lid();
     cout<<"target_lid: "<<target_lid<<endl;
+    cout<<"target_guid: "<<target_node.guid<<endl;
     
     std::vector<ib::entity_t> tmp;
     tmp.push_back(const_cast<ib::entity_t &> (source_node));
 
-    while(tmp.back().lid()!= target_lid) {
-        const ib::entity_t & temp = tmp.back();
-        cout<<temp.guid<<endl;
-        for (
-                ib::entity_t::routes_t::const_iterator
-                        ritr = temp.get_routes().begin(),
-                        reitr = temp.get_routes().end();
-                ritr != reitr;
-                ++ritr
-                ) {
-            std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
-            if (itr != ritr->second.end()) {
-                const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
-                if (port_itr != temp.ports.end()) {
-                    const ib::port_t *const port = port_itr->second;
-                    const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
-                            const_cast<ib::port_t *>(port));
-                    if (edge_itr != fabric->port_edges.end()) {
-                        const tlp::edge &edge = edge_itr->second;
-                        const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
-                        tmp.push_back(const_cast<ib::entity_t &> (node));
-                    }
+    const ib::entity_t & temp = tmp.back();
+    cout<<<<"source_guid: "<<temp.guid<<endl;
+    
+    for (
+            ib::entity_t::routes_t::const_iterator
+                    ritr = temp.get_routes().begin(),
+                    reitr = temp.get_routes().end();
+            ritr != reitr;
+            ++ritr
+            ) {
+        std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
+        if (itr != ritr->second.end()) {
+            const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
+            if (port_itr != temp.ports.end()) {
+                const ib::port_t *const port = port_itr->second;
+                const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
+                        const_cast<ib::port_t *>(port));
+                if (edge_itr != fabric->port_edges.end()) {
+                    const tlp::edge &edge = edge_itr->second;
+                    const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(edge))).c_str(), NULL, 0))->second;
+                    tmp.push_back(const_cast<ib::entity_t &> (node));
+                    cout<<tmp.back().guid<<endl;
                 }
             }
         }
