@@ -140,7 +140,8 @@ bool RouteAnalysis::run(){
 
     const ib::entity_t & temp = *tmp.back();
     cout<<"source_guid: "<<source_node.guid<<endl;
-
+    cout<< "Get into the loop"<<endl;
+        
     for (
             ib::entity_t::routes_t::const_iterator
                     ritr = temp.get_routes().begin(),
@@ -148,12 +149,10 @@ bool RouteAnalysis::run(){
             ritr != reitr;
             ++ritr
             ) {
-
-            cout<< "Get into the loop"<<endl;
+            
             cout<< ritr->second.size()<<endl;
         for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
             cout<< *citr <<endl;
-            cout<<"Get into the inner loop"<<endl;
         }
     }
 
