@@ -84,11 +84,8 @@ bool RouteAnalysis::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
-    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
-
-   ib::lid_t target_lid = target_node.lid();
-    std::vector<ib::entity_t &> tmp;
+    ib::lid_t target_lid = target_node.lid();
+    std::vector<ib::entity_t> tmp;
     tmp.push_back(const_cast<ib::entity_t &> (source_node));
 
     while(tmp.back().lid()!= target_lid) {
@@ -101,9 +98,9 @@ bool RouteAnalysis::run(){
                 ritr != reitr;
                 ++ritr
                 ) {
-            std::set<lid_t>::const_iterator itr = ritr->second.find(target_lid);
+            std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
             if (itr != ritr->second.end()) {
-                const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(itr->first);
+                const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
                 if (port_itr != temp.ports.end()) {
                     const ib::port_t *const port = port_itr->second;
                     const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
