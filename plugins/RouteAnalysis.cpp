@@ -149,8 +149,12 @@ bool RouteAnalysis::run(){
             ++ritr
             ) {
 
-        for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++)
+            cout<< "Get into the loop"<<endl;
+            cout<< ritr->second.size()<<endl;
+        for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
             cout<< *citr <<endl;
+            cout<<"Get into the inner loop"<<endl;
+        }
     }
 
 
