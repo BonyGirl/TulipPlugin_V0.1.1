@@ -95,7 +95,7 @@ bool RouteAnalysis::run(){
     tmp.push_back(const_cast<ib::entity_t &> (source_node));
 
     const ib::entity_t & temp = tmp.back();
-    cout<<<<"source_guid: "<<temp.guid<<endl;
+    cout<<"source_guid: "<<temp.guid<<endl;
     
     for (
             ib::entity_t::routes_t::const_iterator
