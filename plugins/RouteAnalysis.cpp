@@ -104,6 +104,10 @@ bool RouteAnalysis::run(){
             ritr != reitr;
             ++ritr
             ) {
+        
+        for(std::set<ib::lid_t>::const_iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++)
+            cout< *citr <<endl;
+        
         std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
         if (itr != ritr->second.end()) {
             cout<<"find next entity"<<endl;
