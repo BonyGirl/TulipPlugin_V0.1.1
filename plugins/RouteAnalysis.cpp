@@ -84,6 +84,9 @@ bool RouteAnalysis::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
+    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
+    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
+
     ib::lid_t target_lid = target_node.lid();
     std::vector<ib::entity_t> tmp;
     tmp.push_back(const_cast<ib::entity_t &> (source_node));
