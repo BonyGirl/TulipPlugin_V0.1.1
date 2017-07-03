@@ -82,31 +82,43 @@ bool RouteAnalysis::run(){
         
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
-    
 
     const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
     const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
+   ib::lid_t target_lid = target_node.lid();
+   ib::entity_t &tmp = const_cast<ib::entity_t &> (source_node);
+    while(tmp.lid()!= target_lid) {
+        cout<<tmp.lid()<<endl;
+        for (
+                ib::entity_t::routes_t::const_iterator
+                ritr = tmp.get_routes().begin(),
+                reitr = tmp.get_routes().end();
+                ritr != reitr;
+                ++ritr
+             ) 
+        {
+            std::set::const_iterator itr = ritr->second.find(target_lid);
+            if (itr != ritr->second.end()) {
+                const ib::entity_t::portmap_t::const_iterator port_itr = tmp.ports.find(itr->first);
+                if (port_itr != tmp.ports.end()) {
+                    const ib::port_t *const port = port_itr->second;
+                    const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
+                            const_cast<ib::port_t *>(port));
+                    if (edge_itr != fabric->port_edges.end()) {
+                        const tlp::edge &edge = edge_itr->second;
+                        const ib::entity_t &node = entities_map.find(
+                                std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
+                        tmp = const_cast<ib::entity_t &> (node);
+                    }
+                }
+            }
+        }
+    }
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(2, STEPS);
-        //cout<<target_node.guid<<endl;
-        //cout<<source_node.guid<<endl;
-        //typedef std::map<lid_t, port_num_t> unicast_forwarding_table_t;
-        bool flag = false;
-        for(ib::entity_t::unicast_forwarding_table_t::const_iterator it = source_node.uft.begin(); it != source_node.uft.end(); ++it)
-        {
-            cout<<it->first<<"    "<<it->second<<endl;
-            flag = true;
-        }
-        if(flag)
-            cout<<"sucessful"<<endl;
-        else
-            cout<<"error"<<endl;
     }
-
-    //unsigned int myhops = fabric->count_hops(source_node,target_node);
-    //cout<<"The Real Hops between the source and the target is: "<<myhops<<endl;
     
     if(pluginProgress)
     {
