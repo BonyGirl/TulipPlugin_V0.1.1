@@ -106,12 +106,18 @@ bool RouteAnalysis::run(){
             ) {
         std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
         if (itr != ritr->second.end()) {
+            cout<<"find next entity"<<endl;
+          
             const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
             if (port_itr != temp.ports.end()) {
+                cout<<"find port"<<endl;
+                
                 const ib::port_t *const port = port_itr->second;
                 const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
                         const_cast<ib::port_t *>(port));
                 if (edge_itr != fabric->port_edges.end()) {
+                    cout<<"find all"<<endl;
+                    
                     const tlp::edge &edge = edge_itr->second;
                     const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(edge))).c_str(), NULL, 0))->second;
                     tmp.push_back(const_cast<ib::entity_t &> (node));
