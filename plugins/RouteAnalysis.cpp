@@ -135,16 +135,16 @@ bool RouteAnalysis::run(){
     cout<<"target_lid: "<<target_lid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
 
-    std::vector<ib::entity_t> tmp;
-    tmp.push_back(const_cast<ib::entity_t &> (source_node));
+    std::vector<const ib::entity_t> tmp;
+    tmp.push_back(source_node);
 
     const ib::entity_t & temp = tmp.back();
     cout<<"source_guid: "<<source_node.guid<<endl;
 
     for (
             ib::entity_t::routes_t::const_iterator
-                    ritr = source_node.get_routes().begin(),
-                    reitr = source_node.get_routes().end();
+                    ritr = temp.get_routes().begin(),
+                    reitr = temp.get_routes().end();
             ritr != reitr;
             ++ritr
             ) {
