@@ -135,10 +135,10 @@ bool RouteAnalysis::run(){
     cout<<"target_lid: "<<target_lid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
 
-    std::vector<const ib::entity_t> tmp;
-    tmp.push_back(source_node);
+    std::vector<ib::entity_t *> tmp;
+    tmp.push_back(const_cast<ib::entity_t *> (&source_node));
 
-    const ib::entity_t & temp = tmp.back();
+    const ib::entity_t & temp = *tmp.back();
     cout<<"source_guid: "<<source_node.guid<<endl;
 
     for (
