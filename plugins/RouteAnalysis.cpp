@@ -86,14 +86,16 @@ bool RouteAnalysis::run(){
 
     const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
     const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
-
+    
     ib::lid_t target_lid = target_node.lid();
+    cout<<"target_lid: "<<target_lid<<endl;
+    
     std::vector<ib::entity_t> tmp;
     tmp.push_back(const_cast<ib::entity_t &> (source_node));
 
     while(tmp.back().lid()!= target_lid) {
         const ib::entity_t & temp = tmp.back();
-        cout<<temp.lid()<<endl;
+        cout<<temp.guid<<endl;
         for (
                 ib::entity_t::routes_t::const_iterator
                         ritr = temp.get_routes().begin(),
