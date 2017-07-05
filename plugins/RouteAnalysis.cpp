@@ -116,7 +116,7 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    IntegerProperty *getHCA = graph->getLocalProperty<IntegerProperty>("ibHca");
+    IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
     vector<tlp::node> nodes_guid;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
@@ -130,8 +130,8 @@ bool RouteAnalysis::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
-    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
+    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
+    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
     cout<<"source_guid: "<<source_node.guid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
@@ -150,7 +150,11 @@ bool RouteAnalysis::run(){
     ib::lid_t target_lid = target_node.lid();
     std::vector<ib::entity_t *> tmp;
 
-    if(getHCA->getNodeValue(nodes_guid[0])>0){
+    // Use to count the number of hops;
+    unsigned int count_hops = 0;
+    
+    // Whether the souce node is HCA or not
+    if(getPortNum->getNodeValue(nodes_guid[0])== 1){
         //find the only port in HCA
         const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
 
@@ -167,8 +171,86 @@ bool RouteAnalysis::run(){
             tmp.push_back(const_cast<ib::entity_t *> (&source_node));
     }
     
-    unsigned int count_hops = 0;
-    while(tmp.back()->guid!= target_node.guid) {
+    //Whether the target is HCE or not 
+    if(getPortNum->getNodeValue(nodes_guid[1])== 1){
+        //find the only port in HCA
+        const ib::entity_t::portmap_t::const_iterator Myport = target_node.ports.begin();
+
+        //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+        ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+        if(graph->source(Myedge->second).id == nodes_guid[0].id){
+            const tlp::edge &e = Myedge->second;
+            const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(e))).c_str(),NULL,0))->second;
+            while(tmp.back()->guid!= real_target.guid) {
+                const ib::entity_t & temp = *tmp.back();
+                cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
+                for (
+                        ib::entity_t::routes_t::const_iterator
+                                ritr = temp.get_routes().begin(),
+                                reitr = temp.get_routes().end();
+                        ritr != reitr;
+                        ++ritr
+                        ) {
+                    std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
+                    if (itr != ritr->second.end()) {
+                        const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
+                        if (port_itr != temp.ports.end()) {
+                            const ib::port_t *const port = port_itr->second;
+                            const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
+                                    const_cast<ib::port_t *>(port));
+                            if (edge_itr != fabric->port_edges.end()) {
+                                const tlp::edge &edge = edge_itr->second;
+                                const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
+                                tmp.push_back(const_cast<ib::entity_t *> (&node));
+                                    count_hops++;
+                                    }
+                                }
+                            }
+                        }
+              }
+              cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
+                
+        }else{
+            const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(e))).c_str(),NULL,0))->second;
+            while(tmp.back()->guid!= real_target.guid) {
+                const ib::entity_t & temp = *tmp.back();
+                cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
+                for (
+                        ib::entity_t::routes_t::const_iterator
+                                ritr = temp.get_routes().begin(),
+                                reitr = temp.get_routes().end();
+                        ritr != reitr;
+                        ++ritr
+                        ) {
+                    std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
+                    if (itr != ritr->second.end()) {
+                        const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
+                        if (port_itr != temp.ports.end()) {
+                            const ib::port_t *const port = port_itr->second;
+                            const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
+                                    const_cast<ib::port_t *>(port));
+                            if (edge_itr != fabric->port_edges.end()) {
+                                const tlp::edge &edge = edge_itr->second;
+                                const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
+                                tmp.push_back(const_cast<ib::entity_t *> (&node));
+                                    count_hops++;
+                                    }
+                                }
+                            }
+                        }
+              } 
+              cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
+                
+        }
+            
+            
+        cout<<"The "<<++count_hops<<" step: "<<target_node.guid<<endl  
+        cout<<" ------------------------" <<endl;
+        cout<<"The total hops: "<<count_hops<<endl;
+    }
+    else{
+            
+        while(tmp.back()->guid!= target_node.guid) {
         const ib::entity_t & temp = *tmp.back();
         cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
         for (
@@ -190,16 +272,18 @@ bool RouteAnalysis::run(){
                         const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                         tmp.push_back(const_cast<ib::entity_t *> (&node));
                             count_hops++;
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
 
 
     cout<<"The "<<count_hops<<" step: "<<target_node.guid<<endl;
     cout<<" ------------------------" <<endl;
     cout<<"The total hops: "<<count_hops<<endl;
+           
+    }
         
         
     if (pluginProgress) {
