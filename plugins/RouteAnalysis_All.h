@@ -13,7 +13,7 @@
 
 namespace ib = infiniband;
 
-class RouteAnalysis: public tlp::Algorithm{
+class RouteAnalysis_All: public tlp::Algorithm{
     PLUGININFORMATION("Real Route Hops",
                       "zz",
                       "06/27/2017",
@@ -21,7 +21,7 @@ class RouteAnalysis: public tlp::Algorithm{
                       "alphe",
                       "Infiniband");
 public:
-    RouteAnalysis(tlp::PluginContext* context);
+    RouteAnalysis_All(tlp::PluginContext* context);
 
     bool run();
     unsigned int count_hops(const ib::entity_t );
