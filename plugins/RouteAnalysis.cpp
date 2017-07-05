@@ -131,7 +131,7 @@ bool RouteAnalysis::run(){
     const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
     const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
-    ib::lid_t target_lid = target_node.lid();
+    /*ib::lid_t target_lid = target_node.lid();
     cout<<"target_lid: "<<target_lid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
 
@@ -140,22 +140,28 @@ bool RouteAnalysis::run(){
 
     const ib::entity_t & temp = *tmp.back();
     cout<<"source_guid: "<<source_node.guid<<endl;
-    cout<< "Get into the loop"<<endl;
+    cout<< "Get into the loop"<<endl;*/
         
-    /**for (
-            ib::entity_t::routes_t::const_iterator
-                    ritr = temp.get_routes().begin(),
-                    reitr = temp.get_routes().end();
-            ritr != reitr;
-            ++ritr
-            ) {
-            
-            cout<< ritr->second.size()<<endl;
-        for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
-            cout<< *citr <<endl;
+    //ib::lid_t target_lid = target_node.lid();
+    std::vector<ib::entity_t *> tmp;
+
+    cout<<"start"<<endl;
+    if(getHCA->getNodeValue(nodes_guid[0])>0){
+        //find the only port in HCA
+        const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
+
+        //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+        ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+        if(graph->source(Myedge->second).id == nodes_guid[0].id){
+            const tlp::edge &e = Myedge->second;
+            tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
+        }else{
+            tmp.push_back(const_cast<ib::entity_t *> (&source_node));
         }
-    }**/
-    
+
+    }
+        
+    cout<<"next"<<endl;
     while(tmp.back()->guid!= target_node.guid) {
         const ib::entity_t & temp = *tmp.back();
         cout<<temp.guid<<endl;
