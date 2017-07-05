@@ -11,6 +11,7 @@
 #include <tulip/GlScene.h>
 #include <tulip/BooleanProperty.h>
 #include <tulip/StringProperty.h>
+#include <tulip/IntegerProperty.h>
 #include "fabric.h"
 #include "ibautils/ib_fabric.h"
 #include "ibautils/ib_parser.h"
@@ -115,6 +116,7 @@ bool RouteAnalysis::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
+    IntegerProperty *getHCA = graph->getLocalProperty<IntegerProperty>("ibHca");
     vector<tlp::node> nodes_guid;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
@@ -142,7 +144,7 @@ bool RouteAnalysis::run(){
     cout<<"source_guid: "<<source_node.guid<<endl;
     cout<< "Get into the loop"<<endl;*/
         
-    //ib::lid_t target_lid = target_node.lid();
+    ib::lid_t target_lid = target_node.lid();
     std::vector<ib::entity_t *> tmp;
 
     cout<<"start"<<endl;
