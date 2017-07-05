@@ -211,6 +211,11 @@ bool RouteAnalysis::run(){
               cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
                 
         }else{
+            //find the only port in HCA
+            const ib::entity_t::portmap_t::const_iterator Myport = target_node.ports.begin();
+
+            //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+            ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
             const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(e))).c_str(),NULL,0))->second;
             while(tmp.back()->guid!= real_target.guid) {
                 const ib::entity_t & temp = *tmp.back();
@@ -233,18 +238,18 @@ bool RouteAnalysis::run(){
                                 const tlp::edge &edge = edge_itr->second;
                                 const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                                 tmp.push_back(const_cast<ib::entity_t *> (&node));
-                                    count_hops++;
-                                    }
-                                }
+                                count_hops++;
                             }
-                        }
+                         }
+                     }
+                 }
               } 
               cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
                 
         }
             
             
-        cout<<"The "<<++count_hops<<" step: "<<target_node.guid<<endl  
+        cout<<"The "<<++count_hops<<" step: "<<target_node.guid<<endl; 
         cout<<" ------------------------" <<endl;
         cout<<"The total hops: "<<count_hops<<endl;
     }
