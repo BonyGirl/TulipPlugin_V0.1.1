@@ -133,6 +133,9 @@ bool RouteAnalysis::run(){
     const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
     const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
+    cout<<"source_guid: "<<source_node.guid<<endl;
+    cout<<"target_guid: "<<target_node.guid<<endl;
+    cout<<" -------------------------------- "<<endl;
     /*ib::lid_t target_lid = target_node.lid();
     cout<<"target_lid: "<<target_lid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
@@ -147,7 +150,6 @@ bool RouteAnalysis::run(){
     ib::lid_t target_lid = target_node.lid();
     std::vector<ib::entity_t *> tmp;
 
-    cout<<"start"<<endl;
     if(getHCA->getNodeValue(nodes_guid[0])>0){
         //find the only port in HCA
         const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
@@ -165,7 +167,6 @@ bool RouteAnalysis::run(){
             tmp.push_back(const_cast<ib::entity_t *> (&source_node));
     }
         
-    cout<<"next"<<endl;
     while(tmp.back()->guid!= target_node.guid) {
         const ib::entity_t & temp = *tmp.back();
         cout<<temp.guid<<endl;
