@@ -216,6 +216,7 @@ bool RouteAnalysis::run(){
 
             //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
             ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+            const tlp::edge &e = Myedge->second;
             const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(e))).c_str(),NULL,0))->second;
             while(tmp.back()->guid!= real_target.guid) {
                 const ib::entity_t & temp = *tmp.back();
