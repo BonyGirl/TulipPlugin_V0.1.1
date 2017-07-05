@@ -130,8 +130,8 @@ bool RouteAnalysis::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
-    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
+    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
+    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
 
     cout<<"source_guid: "<<source_node.guid<<endl;
     cout<<"target_guid: "<<target_node.guid<<endl;
@@ -166,10 +166,11 @@ bool RouteAnalysis::run(){
    
             tmp.push_back(const_cast<ib::entity_t *> (&source_node));
     }
-        
+    
+    unsigned int count_hops = 0;
     while(tmp.back()->guid!= target_node.guid) {
         const ib::entity_t & temp = *tmp.back();
-        cout<<temp.guid<<endl;
+        cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
         for (
                 ib::entity_t::routes_t::const_iterator
                         ritr = temp.get_routes().begin(),
@@ -188,6 +189,7 @@ bool RouteAnalysis::run(){
                         const tlp::edge &edge = edge_itr->second;
                         const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                         tmp.push_back(const_cast<ib::entity_t *> (&node));
+                            count_hops++;
                     }
                 }
             }
@@ -195,6 +197,11 @@ bool RouteAnalysis::run(){
     }
 
 
+    cout<<"The "<<count_hops<<" step: "<<target_node.guid<<endl;
+    cout<<" ------------------------" <<endl;
+    cout<<"The total hops: "<<count_hops<<endl;
+        
+        
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(4, STEPS);
