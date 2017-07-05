@@ -11,7 +11,7 @@
 #define TULIPTEST_ROUTEANALYSIS_H
 
 class RouteAnalysis: public tlp::Algorithm{
-    PLUGININFORMATION("Real Rohte",
+    PLUGININFORMATION("Real Routes",
                       "zz",
                       "06/27/2017",
                       "print out the real routing path",
