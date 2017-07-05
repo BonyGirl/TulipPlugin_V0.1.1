@@ -43,7 +43,7 @@ RouteAnalysis::RouteAnalysis(tlp::PluginContext* context)
 namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
-unsigned int count_hops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,Graph *graph){
+unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph){
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
 
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
@@ -265,7 +265,7 @@ bool RouteAnalysis::run(){
         pluginProgress->progress(4, STEPS);
     }
 
-    BooleanProperty *selectSource = graph->getLocalProperty("viewSelection");
+    BooleanProperty *selectSource = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
 
     tlp::IntegerProperty * ibRealHop = graph->getProperty<tlp::IntegerProperty>("ibRealHop");
@@ -285,7 +285,7 @@ bool RouteAnalysis::run(){
         else
         {
             const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(node)).c_str(),NULL,0))->second;
-            const unsigned int &temp = count_hops(& source_entity, & target_entity,graph);
+            const unsigned int &temp = count_myhops(& source_entity, & target_entity, graph);
             ibRealHop->setNodeValue(node, temp);
         }
     }
