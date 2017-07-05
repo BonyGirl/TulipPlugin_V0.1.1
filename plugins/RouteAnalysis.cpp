@@ -160,7 +160,9 @@ bool RouteAnalysis::run(){
         }else{
             tmp.push_back(const_cast<ib::entity_t *> (&source_node));
         }
-
+    }else{
+   
+            tmp.push_back(const_cast<ib::entity_t *> (&source_node));
     }
         
     cout<<"next"<<endl;
