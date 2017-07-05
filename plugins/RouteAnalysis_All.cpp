@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 #include <set>
-#include "testtulip.h"
+#include "RouteAnalysis_All.h"
 
 #include <tulip/GlScene.h>
 #include <tulip/BooleanProperty.h>
