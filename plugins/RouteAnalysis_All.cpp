@@ -87,7 +87,7 @@ unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t
             const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(e))).c_str(),NULL,0))->second;
             while(tmp.back()->guid!= real_target.guid) {
                 const ib::entity_t & temp = *tmp.back();
-                cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
+                
                 for (
                         ib::entity_t::routes_t::const_iterator
                                 ritr = temp.get_routes().begin(),
@@ -156,7 +156,7 @@ unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t
 
         while(tmp.back()->guid!= target_entity->guid) {
             const ib::entity_t & temp = *tmp.back();
-            cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
+            
             for (
                     ib::entity_t::routes_t::const_iterator
                             ritr = temp.get_routes().begin(),
