@@ -22,7 +22,7 @@
 using namespace std;
 using namespace tlp;
 
-PLUGIN(RouteAnalysis)
+PLUGIN(RouteAnalysis_All)
 
 static const char * paramHelp[] = {
         // File to Open
@@ -33,7 +33,7 @@ static const char * paramHelp[] = {
   HTML_HELP_CLOSE()
 };
 
-RouteAnalysis::RouteAnalysis(tlp::PluginContext* context)
+RouteAnalysis_All::RouteAnalysis_All(tlp::PluginContext* context)
         : tlp::Algorithm(context)
 {
     addInParameter<std::string>("file::filename", paramHelp[0],"");
@@ -43,7 +43,7 @@ RouteAnalysis::RouteAnalysis(tlp::PluginContext* context)
 namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
-unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph){
+unsigned int RouteAnalysis_All::count_myhops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph){
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
 
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
@@ -189,7 +189,7 @@ unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t
 }
 
 
-bool RouteAnalysis::run(){
+bool RouteAnalysis_All::run(){
     assert(graph);
 
     static const size_t STEPS = 5;
