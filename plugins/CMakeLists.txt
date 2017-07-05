@@ -6,7 +6,7 @@ SET(PLUGIN_NAME Infiniband)
 MESSAGE(STATUS "Adding Infiniband Plugins.")
 INCLUDE_DIRECTORIES(${IBAUTIL_INCLUDE_DIR} ${TULIP_INCLUDE_DIR} ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR})
 
-ADD_LIBRARY(${PLUGIN_NAME}-${TULIP_VERSION} SHARED routes.cpp topology.cpp fabric.cpp csv.cpp helloworld.cpp InfinibandAnalysis.cpp RouteAnalysis.cpp)
+ADD_LIBRARY(${PLUGIN_NAME}-${TULIP_VERSION} SHARED routes.cpp topology.cpp fabric.cpp csv.cpp helloworld.cpp InfinibandAnalysis.cpp RouteAnalysis.cpp RouteAnalysis_All.cpp)
 IF(APPLE)
         SET_TARGET_PROPERTIES(${PLUGIN_NAME}-${TULIP_VERSION} PROPERTIES MACOSX_RPATH ON)
 ENDIF(APPLE)
