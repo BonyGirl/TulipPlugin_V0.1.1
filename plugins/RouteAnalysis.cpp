@@ -12,6 +12,7 @@
 #include <tulip/BooleanProperty.h>
 #include <tulip/StringProperty.h>
 #include <tulip/IntegerProperty.h>
+#include <tulip/ColorProperty.h>
 #include "fabric.h"
 #include "ibautils/ib_fabric.h"
 #include "ibautils/ib_parser.h"
@@ -117,6 +118,7 @@ bool RouteAnalysis::run(){
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
+    ColorProperty *setColor = graph->getLocalProperty<ColorProperty>("viewColor");
     vector<tlp::node> nodes_guid;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
@@ -160,6 +162,7 @@ bool RouteAnalysis::run(){
 
         //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
         ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+        setColor->setEdgeValue(Myport->second, tlp::Color::SpringGreen);
         if(graph->source(Myedge->second).id == nodes_guid[0].id){
             const tlp::edge &e = Myedge->second;
             tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
@@ -178,6 +181,7 @@ bool RouteAnalysis::run(){
 
         //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
         ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+        setColor->setEdgeValue(Myport->second, tlp::Color::SpringGreen);
         if(graph->source(Myedge->second).id == nodes_guid[0].id){
             const tlp::edge &e = Myedge->second;
             const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(e))).c_str(),NULL,0))->second;
@@ -200,6 +204,7 @@ bool RouteAnalysis::run(){
                                     const_cast<ib::port_t *>(port));
                             if (edge_itr != fabric->port_edges.end()) {
                                 const tlp::edge &edge = edge_itr->second;
+                                setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                                 const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                                 tmp.push_back(const_cast<ib::entity_t *> (&node));
                                     count_hops++;
@@ -217,6 +222,7 @@ bool RouteAnalysis::run(){
             //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
             ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
             const tlp::edge &e = Myedge->second;
+            setColor->setEdgeValue(e, tlp::Color::SpringGreen);
             const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(e))).c_str(),NULL,0))->second;
             while(tmp.back()->guid!= real_target.guid) {
                 const ib::entity_t & temp = *tmp.back();
@@ -237,6 +243,7 @@ bool RouteAnalysis::run(){
                                     const_cast<ib::port_t *>(port));
                             if (edge_itr != fabric->port_edges.end()) {
                                 const tlp::edge &edge = edge_itr->second;
+                                setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                                 const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                                 tmp.push_back(const_cast<ib::entity_t *> (&node));
                                 count_hops++;
@@ -275,6 +282,7 @@ bool RouteAnalysis::run(){
                             const_cast<ib::port_t *>(port));
                     if (edge_itr != fabric->port_edges.end()) {
                         const tlp::edge &edge = edge_itr->second;
+                        setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                         const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                         tmp.push_back(const_cast<ib::entity_t *> (&node));
                             count_hops++;
