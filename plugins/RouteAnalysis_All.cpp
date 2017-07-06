@@ -297,7 +297,7 @@ bool RouteAnalysis_All::run(){
         else
         {
             const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(node)).c_str(),NULL,0))->second;
-            const int &temp = count_myhops(& source_entity, & target_entity, graph);
+            const unsigned int &temp = count_myhops(& source_entity, & target_entity, graph);
             cout<<"The hops from source to node"<<node.id<<"is: "<<temp<<endl;
             ibRealHop->setNodeValue(node, temp);
         }
