@@ -130,26 +130,29 @@ bool TestLid::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
     cout<<"test1"<<endl;
-    const ib::fabric_t::entities_t::const_iterator  s = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
-    cout<<"test2"<<endl;
-    if(s != entities_map.end()){
-        const ib::entity_t & source_node = s->second;
-        cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
-            
-        const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
+    if(entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0)) != entities_map.end()){
+       const ib::fabric_t::entities_t::const_iterator  s = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
+       if(s != entities_map.end()){
+             const ib::entity_t & source_node = s->second;
+             cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
 
-        cout<<"find the port: "<<Myport->first<<endl;
-        //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
-        ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
-        cout<<"find the edge: "<<Myedge->second.id<<endl;
-        selectBool->setEdgeValue(Myedge->second, true);
-        const tlp::edge &e = Myedge->second;
-        cout<<e.id<<endl;
+              const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
 
-        selectBool->setEdgeValue(Myedge->second, true);
+              cout<<"find the port: "<<Myport->first<<endl;
+              //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+              ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+              cout<<"find the edge: "<<Myedge->second.id<<endl;
+              selectBool->setEdgeValue(Myedge->second, true);
+              const tlp::edge &e = Myedge->second;
+              cout<<e.id<<endl;
+
+              selectBool->setEdgeValue(Myedge->second, true);
+        }else{
+              cout<<"No port exist"<<endl;
+        }
     }else{
-        cout<<"No exist"<<endl;
-    }
+              cout<<"No entities exist"<<endl;
+   }
     
 
     //tmp.push_back(const_cast<ib::entity_t *> (&source_node));
