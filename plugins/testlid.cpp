@@ -130,14 +130,27 @@ bool TestLid::run(){
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
-    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0))->second;
+    const ib::fabric_t::entities_t::const_iterator  s = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
+    if(s != entities_map.end()){
+        const ib::entity_t & source_entity = s->second;
+        cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
+            
+        const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
 
+        cout<<"find the port: "<<Myport->first<<endl;
+        //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+        ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+        cout<<"find the edge: "<<Myedge->second.id<<endl;
+        selectBool->setEdgeValue(Myedge->second, true);
+        const tlp::edge &e = Myedge->second;
+        cout<<e.id<<endl;
 
-    ib::lid_t target_lid = target_node.lid();
-    std::vector<ib::entity_t *> tmp;
-    cout<<"This is target guid "<<target_node.guid<<" This is target lid: "<<target_lid<<endl;
-    cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
+        tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
+        selectBool->setEdgeValue(Myedge->second, true);
+    }else{
+        cout<<"No exist"<<endl;
+    }
+    
 
     //tmp.push_back(const_cast<ib::entity_t *> (&source_node));
 
@@ -155,18 +168,6 @@ bool TestLid::run(){
         }
     }*/
         
-    const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
-
-    cout<<"find the port: "<<Myport->first<<endl;
-    //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
-   ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
-   cout<<"find the edge: "<<Myedge->second.id<<endl;
-   selectBool->setEdgeValue(Myedge->second, true);
-   const tlp::edge &e = Myedge->second;
-   cout<<e.id<<endl;
-        
-   tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
-   selectBool->setEdgeValue(Myedge->second, true);
         
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
