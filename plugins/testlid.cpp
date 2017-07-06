@@ -145,7 +145,6 @@ bool TestLid::run(){
         const tlp::edge &e = Myedge->second;
         cout<<e.id<<endl;
 
-        tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
         selectBool->setEdgeValue(Myedge->second, true);
     }else{
         cout<<"No exist"<<endl;
