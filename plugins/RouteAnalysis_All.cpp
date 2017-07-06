@@ -277,7 +277,7 @@ bool RouteAnalysis_All::run(){
     //cout<<temp<<endl;
         
     tlp::IntegerProperty * ibRealHop = graph->getProperty<tlp::IntegerProperty>("ibRealHop");
-    assert(ibRealHop)
+    assert(ibRealHop);
     
     tlp::Iterator<tlp::node> *other = graph->getNodes();
     if(pluginProgress)
