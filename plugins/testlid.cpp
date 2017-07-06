@@ -129,8 +129,9 @@ bool TestLid::run(){
 
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
-
+    cout<<"test1"<<endl;
     const ib::fabric_t::entities_t::const_iterator  s = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
+    cout<<"test2"<<endl;
     if(s != entities_map.end()){
         const ib::entity_t & source_node = s->second;
         cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
