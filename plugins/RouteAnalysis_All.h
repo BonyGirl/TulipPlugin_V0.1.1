@@ -24,6 +24,6 @@ public:
     RouteAnalysis_All(tlp::PluginContext* context);
 
     bool run();
-    unsigned int count_hops(const ib::entity_t );
+    unsigned int count_myhops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph);
 };
 #endif //TULIPTEST_ROUTEANALYSIS_H
