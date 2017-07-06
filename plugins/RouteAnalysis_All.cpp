@@ -181,11 +181,9 @@ unsigned int RouteAnalysis_All::count_myhops(const ib::entity_t * source_entity,
                 }
             }
         }
-
-
-       return count;
-
     }
+         return count;
+
 }
 
 
