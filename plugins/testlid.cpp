@@ -141,7 +141,7 @@ bool TestLid::run(){
 
     //tmp.push_back(const_cast<ib::entity_t *> (&source_node));
 
-    for (
+    /*for (
             ib::entity_t::routes_t::const_iterator
                     ritr = source_node.get_routes().begin(),
                     reitr = source_node.get_routes().end();
@@ -153,10 +153,21 @@ bool TestLid::run(){
         for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
             cout<< *citr <<endl;
         }
-    }
+    }*/
+        
+    const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
 
-
-
+    cout<<"find the port: "<<Myport->first<<endl;
+    //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
+   ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
+   cout<<"find the edge: "<<Myedge.id<<endl;
+   selectBool->setEdgeValue(Myedge->second, true);
+   const tlp::edge &e = Myedge->second;
+   cout<<e.id<<endl;
+        
+   tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
+   selectBool->setEdgeValue(Myedge->second, true);
+        
     if (pluginProgress) {
         pluginProgress->setComment("Found path source and target");
         pluginProgress->progress(4, STEPS);
