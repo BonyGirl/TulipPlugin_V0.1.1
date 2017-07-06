@@ -132,7 +132,7 @@ bool TestLid::run(){
 
     const ib::fabric_t::entities_t::const_iterator  s = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0));
     if(s != entities_map.end()){
-        const ib::entity_t & source_entity = s->second;
+        const ib::entity_t & source_node = s->second;
         cout<<"This is source guid "<<source_node.guid<<" This is source lid: "<<source_node.lid()<<endl;
             
         const ib::entity_t::portmap_t::const_iterator Myport = source_node.ports.begin();
