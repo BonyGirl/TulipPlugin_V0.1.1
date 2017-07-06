@@ -190,7 +190,7 @@ unsigned int RouteAnalysis_All::count_myhops(const ib::entity_t * source_entity,
 bool RouteAnalysis_All::run(){
     assert(graph);
 
-    static const size_t STEPS = 5;
+    static const size_t STEPS = 6;
     if(pluginProgress)
     {
         pluginProgress->showPreview(false);
@@ -282,7 +282,7 @@ bool RouteAnalysis_All::run(){
     tlp::Iterator<tlp::node> *other = graph->getNodes();
     if(pluginProgress)
     {
-        pluginProgress->setComment("Show the max min average steps");
+        pluginProgress->setComment("Show the real hops");
         pluginProgress->progress(5, STEPS);
     }
         
