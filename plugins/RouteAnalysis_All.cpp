@@ -290,12 +290,15 @@ bool RouteAnalysis_All::run(){
         const tlp::node &node = other->next();
         if(node.id == mySource.id)
         {    
+            ibRealHop->setNodeValue(node, 0);
+            cout<<"This is the source"<<endl;
             continue;
         }
         else
         {
             const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(node)).c_str(),NULL,0))->second;
             const int &temp = count_myhops(& source_entity, & target_entity, graph);
+            cout<<"The hops from source to node"<<node.id<<"is: "<<temp<<endl;
             ibRealHop->setNodeValue(node, temp);
         }
     }
