@@ -132,7 +132,7 @@ bool TestLid::run(){
     cout<<"test1"<<endl;
     for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
         if(it->second.id == nodes_guid[0].id){
-            ib::entity_t * source_entity const= it->first;
+            const ib::entity_t * source_entity = it->first;
             
             cout<<"This is source guid "<<source_entity->guid<<" This is source lid: "<<source_entity->lid()<<endl;
 
