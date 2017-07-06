@@ -266,35 +266,41 @@ bool RouteAnalysis_All::run(){
     BooleanProperty *selectSource = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
 
-    tlp::IntegerProperty * ibRealHop = graph->getProperty<tlp::IntegerProperty>("ibRealHop");
-    assert(ibRealHop);
-
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
     tlp::Iterator<tlp::node> *selections = selectSource->getNodesEqualTo(true,NULL);
     const tlp::node mySource = selections->next();
     const ib::entity_t & source_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(mySource)).c_str(),NULL,0))->second;
-
-    tlp::Iterator<tlp::node> *other = graph->getNodes();
     
-    const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(other->next())).c_str(),NULL,0))->second;
-    const unsigned int &temp = count_myhops(& source_entity, & target_entity,graph);
-    cout<<temp<<endl;
+    //const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(other->next())).c_str(),NULL,0))->second;
+    //const unsigned int &temp = count_myhops(& source_entity, & target_entity,graph);
+    //cout<<temp<<endl;
         
+    tlp::IntegerProperty * ibRealHop = graph->getProperty<tlp::IntegerProperty>("ibRealHop");
+    assert(ibRealHop)
+    
+    tlp::Iterator<tlp::node> *other = graph->getNodes();
+    if(pluginProgress)
+    {
+        pluginProgress->setComment("Show the max min average steps");
+        pluginProgress->progress(5, STEPS);
+    }
         
-    /*while(other->hasNext()){
+    while(other->hasNext()){
         const tlp::node &node = other->next();
         if(node.id == mySource.id)
+        {    
             continue;
+        }
         else
         {
             const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(node)).c_str(),NULL,0))->second;
-            const unsigned int &temp = count_myhops(& source_entity, & target_entity, graph);
+            const int &temp = count_myhops(& source_entity, & target_entity, graph);
             ibRealHop->setNodeValue(node, temp);
         }
-    }*/
+    }
 
-
+   
     if(pluginProgress)
     {
         pluginProgress->setComment("Print the Real hops");
