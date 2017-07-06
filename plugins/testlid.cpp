@@ -12,7 +12,6 @@
 #include <tulip/BooleanProperty.h>
 #include <tulip/StringProperty.h>
 #include <tulip/IntegerProperty.h>
-#include <tulip/ColorProperty.h>
 #include "fabric.h"
 #include "ibautils/ib_fabric.h"
 #include "ibautils/ib_parser.h"
@@ -117,9 +116,8 @@ bool TestLid::run(){
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-    IntegerProperty *getHCA = graph->getLocalProperty<IntegerProperty>("ibHca");
-    ColorProperty *setColor = graph->getLocalProperty("viewColor");
-    vector<tlp::node> nodes_guid;
+    
+    //vector<tlp::node> nodes_guid;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
