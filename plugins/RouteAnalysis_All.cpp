@@ -278,8 +278,8 @@ bool RouteAnalysis_All::run(){
     const ib::entity_t & source_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(mySource)).c_str(),NULL,0))->second;
 
     tlp::Iterator<tlp::node> *other = graph->getNodes();
-        
-    const ib::entity_t & target_entity = entities_map.find(26329224641618056734)->second;
+    
+    const ib::entity_t & target_entity = entities_map.find(std::stol((getGuid->getNodeStringValue(other->next())).c_str(),NULL,0))->second;
     const unsigned int &temp = count_hops(& source_entity, & target_entity,graph);
     cout<<temp<<endl;
         
