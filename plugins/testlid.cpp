@@ -160,7 +160,7 @@ bool TestLid::run(){
     cout<<"find the port: "<<Myport->first<<endl;
     //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
    ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
-   cout<<"find the edge: "<<Myedge.id<<endl;
+   cout<<"find the edge: "<<Myedge->second.id<<endl;
    selectBool->setEdgeValue(Myedge->second, true);
    const tlp::edge &e = Myedge->second;
    cout<<e.id<<endl;
