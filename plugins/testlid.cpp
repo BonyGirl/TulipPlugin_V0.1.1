@@ -126,8 +126,8 @@ bool TestLid::run(){
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
     tlp::Iterator<tlp::node> *it = graph->getNodes();
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(selections->next())).c_str(),NULL,0))->second;
-    const ib::entity_t & target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(it->next())).c_str(),NULL,0))->second;
+    const ib::entity_t source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(selections->next())).c_str(),NULL,0))->second;
+    const ib::entity_t target_node = entities_map.find(std::stol((getGuid->getNodeStringValue(it->next())).c_str(),NULL,0))->second;
 
 
 
