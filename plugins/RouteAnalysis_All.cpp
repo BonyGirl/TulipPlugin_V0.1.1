@@ -265,7 +265,8 @@ bool RouteAnalysis_All::run(){
 
     BooleanProperty *selectSource = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
-
+    StringProperty *getibName = graph->getLocalProperty<StringProperty>("ibName");
+        
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
     tlp::Iterator<tlp::node> *selections = selectSource->getNodesEqualTo(true,NULL);
@@ -288,10 +289,15 @@ bool RouteAnalysis_All::run(){
         
     while(other->hasNext()){
         const tlp::node &node = other->next();
-        if(node.id == mySource.id)
+        const string node_name = getibName->getNodeStringValue(node);
+            
+        if(node.id == mySource.id || node_name.substr(0,2) == "gs" || node_name.substr(0,2) == "im")
         {    
             ibRealHop->setNodeValue(node, 0);
-            cout<<"This is the source"<<endl;
+            if(node.id == mySource.id)
+                cout<<"This is the source"<<endl;
+            else
+                cout<<"Unreachable"<<endl;  
             continue;
         }
         else
