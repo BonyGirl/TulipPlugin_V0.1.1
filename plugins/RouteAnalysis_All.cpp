@@ -250,9 +250,10 @@ bool RouteAnalysis_All::run(){
                     for(ib::tulip_fabric_t::entity_nodes_t::iterator it2 = fabric->entity_nodes.begin(); it2 != fabric->entity_nodes.end(); ++it2){
                         if(it2->second.id == node.id){
                             const ib::entity_t * target_entity = it2->first;
-                            const unsigned int &temp = count_hops(source_entity,target_entity,graph);
-                            cout<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
-                            ibRealHop->setNodeValue(node, temp);
+                            cout<<target_entity->guid<<endl;
+                            //const unsigned int &temp = count_hops(source_entity,target_entity,graph);
+                            //cout<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
+                            //ibRealHop->setNodeValue(node, temp);
                         }
                     }
                 }
