@@ -132,7 +132,7 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
             for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
                 if(it->second.id == graph->target(e).id){
                     const ib::entity_t * real_target = it->first;
-                    count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid, entities_map);
+                    count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid);
                  }
             }
         }else {
@@ -146,14 +146,14 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
             for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
                 if(it->second.id == graph->source(e).id){
                     const ib::entity_t * real_target = it->first;
-                    count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid, entities_map);
+                    count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid);
                  }
             }
          }
             count++;
       }
     else{
-        count += help_count(fabric, graph, tmp, target_entity, target_lid, getGuid, entities_map);
+        count += help_count(fabric, graph, tmp, target_entity, target_lid, getGuid);
 
     }
     return count;
