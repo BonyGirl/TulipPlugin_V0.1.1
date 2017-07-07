@@ -150,7 +150,7 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
 bool RouteAnalysis_All::run(){
     assert(graph);
 
-    static const size_t STEPS = 5;
+    static const size_t STEPS = 6;
     if(pluginProgress)
     {
         pluginProgress->showPreview(false);
@@ -234,8 +234,10 @@ bool RouteAnalysis_All::run(){
 
     tlp::Iterator<tlp::node> *selections = selectSource->getNodesEqualTo(true,NULL);
     const tlp::node mySource = selections->next();
+  
     for(ib::tulip_fabric_t::entity_nodes_t::iterator it1 = fabric->entity_nodes.begin(); it1 != fabric->entity_nodes.end(); ++it1){
         if(it1->second.id == mySource.id){
+            cout<<mySource.id<<endl;
             const ib::entity_t * source_entity = it1->first;
             while(other->hasNext()){
                 const tlp::node &node = other->next();
@@ -249,6 +251,7 @@ bool RouteAnalysis_All::run(){
                         if(it2->second.id == node.id){
                             const ib::entity_t * target_entity = it2->first;
                             const unsigned int &temp = count_hops(source_entity,target_entity,graph);
+                            cout<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
                             ibRealHop->setNodeValue(node, temp);
                         }
                     }
