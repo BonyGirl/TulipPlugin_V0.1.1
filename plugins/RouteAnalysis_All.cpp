@@ -128,10 +128,15 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
         ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
         if(graph->source(Myedge->second).id == source_node.id){
             const tlp::edge &e = Myedge->second;
+          
+            //test
             cout<<"edge id: "<<e.id<<endl;
             for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
                 if(it->second.id == graph->target(e).id){
                     const ib::entity_t * real_target = it->first;
+                    
+                    //test
+                    cout<<"Node id: "<< graph->target(e).id<<" guid: "<<real_target->guid<<endl;
                     count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid);
                  }
             }
@@ -142,10 +147,15 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
             //use the typedef std::map<port_t*, tlp::edge> port_edges_t to find the edge
             ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
             const tlp::edge &e = Myedge->second;
+          
+            //test
             cout<<"edge id: "<<e.id<<endl;
             for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
                 if(it->second.id == graph->source(e).id){
                     const ib::entity_t * real_target = it->first;
+                  
+                    //test
+                    cout<<"Node id: "<< graph->source(e).id<<" guid: "<<real_target->guid<<endl;
                     count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid);
                  }
             }
@@ -263,9 +273,10 @@ bool RouteAnalysis_All::run(){
                     for(ib::tulip_fabric_t::entity_nodes_t::iterator it2 = fabric->entity_nodes.begin(); it2 != fabric->entity_nodes.end(); ++it2){
                         if(it2->second.id == node.id){
                             const ib::entity_t * target_entity = it2->first;
-                            cout<<target_entity->guid<<endl;
                             const unsigned int &temp = count_hops(source_entity,target_entity,graph);
-                            cout<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
+                          
+                            //test
+                            cout<<mySource.id<<" to "<< node.id<<" : "<<temp<<" guid: "<<target_entity->guid<<endl;
                             ibRealHop->setNodeValue(node, temp);
                         }
                     }
