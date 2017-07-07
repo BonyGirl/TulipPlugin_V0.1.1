@@ -43,7 +43,7 @@ RouteAnalysis_All::RouteAnalysis_All(tlp::PluginContext* context)
 namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
-unsigned int help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
+unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
                         std::vector<ib::entity_t *> tmp, const ib::entity_t * real_target,
                         ib::lid_t target_lid,StringProperty *getGuid,const ib::fabric_t::entities_t &entities_map)
 {
@@ -79,7 +79,7 @@ unsigned int help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const gr
 }
 
 
-unsigned int count_hops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph){
+unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, const ib::entity_t * target_entity,tlp::Graph * const graph){
     //Get the fabric from the graph
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
 
