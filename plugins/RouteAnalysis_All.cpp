@@ -1,6 +1,23 @@
-//
-// Created by zliu58 on 7/5/17.
-//
+/**
+ *
+ * This file is part of Tulip (www.tulip-software.org)
+ *
+ * Authors: David Auber and the Tulip development Team
+ * from LaBRI, University of Bordeaux, University Corporation 
+ * for Atmospheric Research
+ *
+ * Tulip is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Tulip is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ *
+ **/
 
 #include<fstream>
 #include <algorithm>
@@ -25,12 +42,14 @@ using namespace tlp;
 PLUGIN(RouteAnalysis_All)
 
 static const char * paramHelp[] = {
+  
   // File to Open
   HTML_HELP_OPEN() \
   HTML_HELP_DEF( "type", "pathname" ) \
   HTML_HELP_BODY() \
   "Path to ibdiagnet2.fdbs file to import" \
   HTML_HELP_CLOSE()
+    
 };
 
 RouteAnalysis_All::RouteAnalysis_All(tlp::PluginContext* context)
@@ -44,9 +63,10 @@ namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
 unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
-                        std::vector<ib::entity_t *> tmp, const ib::entity_t * real_target,
-                        ib::lid_t target_lid,StringProperty *getGuid)
+                                           std::vector<ib::entity_t *> tmp, const ib::entity_t * real_target,
+                                           ib::lid_t target_lid,StringProperty *getGuid)
 {
+    //count the hops
     unsigned int count = 0;
     while(tmp.back()->guid!= real_target->guid) {
         const ib::entity_t & temp = *tmp.back();
