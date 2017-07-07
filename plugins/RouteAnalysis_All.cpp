@@ -45,7 +45,7 @@ namespace ibp = infiniband::parser;
 
 unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
                         std::vector<ib::entity_t *> tmp, const ib::entity_t * real_target,
-                        ib::lid_t target_lid,StringProperty *getGuid,const ib::fabric_t::entities_t &entities_map)
+                        ib::lid_t target_lid,StringProperty *getGuid)
 {
     unsigned int count = 0;
     while(tmp.back()->guid!= real_target->guid) {
@@ -66,9 +66,14 @@ unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tl
                             const_cast<ib::port_t *>(port));
                     if (edge_itr != fabric->port_edges.end()) {
                         const tlp::edge &edge = edge_itr->second;
-                        const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
-                        tmp.push_back(const_cast<ib::entity_t *> (&node));
-                        count++;
+                        for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
+                            if(it->second.id == graph->target(edge).id){
+                                const ib::entity_t * myEntity = it->first;
+                                tmp.push_back(const_cast<ib::entity_t *> (myEntity));
+                                count++;
+                             }
+                        }
+                        //const ib::entity_t &node = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(edge))).c_str(), NULL, 0))->second;
                     }
                 }
             }
