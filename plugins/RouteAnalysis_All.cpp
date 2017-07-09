@@ -139,10 +139,16 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
                 if(it->second.id == graph->target(e).id){
                     const ib::entity_t * real_source = it->first;
                     tmp.push_back(const_cast<ib::entity_t *> (real_source));
+                  
+                    //test
+                    cout<<"next step"<<it->second.id<<" "; 
                  }
             }
         }else{
             tmp.push_back(const_cast<ib::entity_t *> (source_entity));
+            
+            //test
+            cout<<"next step"<<source_node.id<<" ";
         }
         count++;
     }
@@ -177,13 +183,13 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
             const tlp::edge &e = Myedge->second;
           
             //test
-            cout<<"edge id: "<<e.id<<endl;
+            //cout<<"edge id: "<<e.id<<endl;
             for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
                 if(it->second.id == graph->source(e).id){
                     const ib::entity_t * real_target = it->first;
                   
                     //test
-                    cout<<"Node id: "<< graph->source(e).id<<" guid: "<<real_target->guid<<endl;
+                    //cout<<"Node id: "<< graph->source(e).id<<" guid: "<<real_target->guid<<endl;
                     count += help_count(fabric, graph, tmp, real_target, target_lid, getGuid);
                  }
             }
@@ -301,10 +307,14 @@ bool RouteAnalysis_All::run(){
                     for(ib::tulip_fabric_t::entity_nodes_t::iterator it2 = fabric->entity_nodes.begin(); it2 != fabric->entity_nodes.end(); ++it2){
                         if(it2->second.id == node.id){
                             const ib::entity_t * target_entity = it2->first;
-                            const unsigned int &temp = count_hops(source_entity,target_entity,graph);
+  
                           
                             //test
+                            cout<<"-------------------------------"<<endl;
                             cout<<"main test"<<mySource.id<<" to "<< node.id<<" : "<<temp<<" guid: "<<target_entity->guid<<endl;
+                            cout<<"---------detail---------"<<endl;
+                            
+                            const unsigned int &temp = count_hops(source_entity,target_entity,graph);
                             ibRealHop->setNodeValue(node, temp);
                         }
                     }
