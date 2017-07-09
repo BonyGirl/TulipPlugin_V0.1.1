@@ -70,6 +70,7 @@ unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tl
     unsigned int count = 0;
     while(tmp.back()->guid!= real_target->guid) {
         const ib::entity_t & temp = *tmp.back();
+        bool flag = false;
         for (
                 ib::entity_t::routes_t::const_iterator
                         ritr = temp.get_routes().begin(),
@@ -100,6 +101,12 @@ unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tl
                     }
                 }
             }
+          
+          flag = true;
+        }
+        
+        if(!flag){
+          return -1;
         }
     }
     return count;
@@ -318,7 +325,7 @@ bool RouteAnalysis_All::run(){
                             cout<<"main test"<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
                             ibRealHop->setNodeValue(node, temp);
                         }
-                    }
+                    } 
                 }
             }
         }
