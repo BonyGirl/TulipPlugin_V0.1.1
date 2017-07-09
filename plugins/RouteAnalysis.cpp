@@ -238,6 +238,7 @@ bool RouteAnalysis::run(){
                         ritr != reitr;
                         ++ritr
                         ) {
+                    
                     std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
                     if (itr != ritr->second.end()) {
                         const ib::entity_t::portmap_t::const_iterator port_itr = temp.ports.find(ritr->first);
@@ -254,7 +255,10 @@ bool RouteAnalysis::run(){
                                 count_hops++;
                             }
                          }
-                     }
+                     }else{
+                    
+                            cout<<"Do not find routesmap"<<endl;
+                    }
                  }
               } 
               cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
