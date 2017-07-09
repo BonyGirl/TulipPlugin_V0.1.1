@@ -311,10 +311,11 @@ bool RouteAnalysis_All::run(){
                           
                             //test
                             cout<<"-------------------------------"<<endl;
-                            cout<<"main test"<<mySource.id<<" to "<< node.id<<" : "<<temp<<" guid: "<<target_entity->guid<<endl;
+                            cout<<"main test"<<mySource.id<<" to "<< node.id<<" target_guid: "<<target_entity->guid<<endl;
                             cout<<"---------detail---------"<<endl;
                             
                             const unsigned int &temp = count_hops(source_entity,target_entity,graph);
+                            cout<<"main test"<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
                             ibRealHop->setNodeValue(node, temp);
                         }
                     }
