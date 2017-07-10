@@ -63,7 +63,7 @@ namespace ib = infiniband;
 namespace ibp = infiniband::parser;
 
 unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
-                                           std::vector<ib::entity_t *> tmp, const ib::entity_t * real_target,
+                                           std::vector<ib::entity_t *> &tmp, const ib::entity_t * real_target,
                                            ib::lid_t target_lid,StringProperty *getGuid)
 {
     //count the hops
@@ -148,14 +148,21 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
                     tmp.push_back(const_cast<ib::entity_t *> (real_source));
                   
                     //test
-                    cout<<"next step"<<it->second.id<<" "; 
+                    cout<<"Source --- "<<it->second.id<<" "; 
                  }
             }
         }else{
-            tmp.push_back(const_cast<ib::entity_t *> (source_entity));
+            try
+            {
+                tmp.push_back(const_cast<ib::entity_t *> (source_entity));
+             }
+            catch(std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+             }
             
             //test
-            cout<<"next step"<<source_node.id<<" ";
+            cout<<"Source --- "<<source_node.id<<" ";
         }
         count++;
     }
@@ -204,6 +211,7 @@ unsigned int RouteAnalysis_All::count_hops(const ib::entity_t * source_entity, c
             count++;
       }
     else{
+        cout<<"test"<<endl;
         count += help_count(fabric, graph, tmp, target_entity, target_lid, getGuid);
 
     }
