@@ -139,8 +139,8 @@ bool TestLid::run(){
         
         cout<<"test2"<<endl;
     for(ib::tulip_fabric_t::entity_nodes_t::iterator it1 = fabric->entity_nodes.begin(); it1 != fabric->entity_nodes.end(); ++it1){
-        if(it1->second.id == mySource.id){
-            cout<<mySource.id<<endl;
+        if(it1->second.id == nodes_guid[0].id){
+            cout<<"node id: "<<nodes_guid[0].id<<endl;
             const ib::entity_t * source_entity = it1->first;
             for (
                     ib::entity_t::routes_t::const_iterator
@@ -150,7 +150,7 @@ bool TestLid::run(){
                     ++ritr
             ) {
 
-             cout<< ritr->second.size()<<endl;
+             cout<<"number of lids: "<< ritr->second.size()<<endl;
              for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
                  cout<< *citr <<endl;
                 }
