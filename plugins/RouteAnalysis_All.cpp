@@ -336,7 +336,7 @@ bool RouteAnalysis_All::run(){
                             }else{
                               const unsigned int &temp = count_hops(source_entity,target_entity,graph);
                               cout<<"main test"<<mySource.id<<" to "<< node.id<<" : "<<temp<<endl;
-                              ibRealHop->setNodeValue(node, temp)
+                              ibRealHop->setNodeValue(node, temp);
                             }
                             
        
