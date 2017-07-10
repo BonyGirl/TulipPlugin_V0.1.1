@@ -117,11 +117,13 @@ bool TestLid::run(){
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
     StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
  
+    cout<<"test0"<<endl;
     vector<tlp::node> nodes_guid;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
+    cout<<"test2"<<endl;
     while(selections->hasNext()){
         const tlp::node &mynode = selections->next();
             try
@@ -134,10 +136,31 @@ bool TestLid::run(){
              }
     }
 
-    const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
+        
+        cout<<"test2"<<endl;
+    for(ib::tulip_fabric_t::entity_nodes_t::iterator it1 = fabric->entity_nodes.begin(); it1 != fabric->entity_nodes.end(); ++it1){
+        if(it1->second.id == mySource.id){
+            cout<<mySource.id<<endl;
+            const ib::entity_t * source_entity = it1->first;
+            for (
+                    ib::entity_t::routes_t::const_iterator
+                    ritr = source_entity->get_routes().begin(),
+                    reitr = source_entity->get_routes().end();
+                    ritr != reitr;
+                    ++ritr
+            ) {
+
+             cout<< ritr->second.size()<<endl;
+             for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
+                 cout<< *citr <<endl;
+                }
+            }
+        }
+    }
+    //const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
-    cout<<"test1"<<endl;
+    
     /*for(ib::tulip_fabric_t::entity_nodes_t::iterator it = fabric->entity_nodes.begin(); it != fabric->entity_nodes.end(); ++it){
         if(it->second.id == nodes_guid[0].id){
             const ib::entity_t * source_entity = it->first;
@@ -160,20 +183,6 @@ bool TestLid::run(){
         
         
     //tmp.push_back(const_cast<ib::entity_t *> (&source_node));
-
-    for (
-            ib::entity_t::routes_t::const_iterator
-                    ritr = source_node.get_routes().begin(),
-                    reitr = source_node.get_routes().end();
-            ritr != reitr;
-            ++ritr
-            ) {
-
-        cout<< ritr->second.size()<<endl;
-        for(std::set<ib::lid_t>::iterator citr = ritr->second.begin();  citr != ritr->second.end(); citr++){
-            cout<< *citr <<endl;
-        }
-    }
         
         
     if (pluginProgress) {
