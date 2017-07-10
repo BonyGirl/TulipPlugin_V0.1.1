@@ -124,7 +124,14 @@ bool TestLid::run(){
 
     while(selections->hasNext()){
         const tlp::node &mynode = selections->next();
-        nodes_guid.push_back(mynode);
+            try
+            {
+                nodes_guid.push_back(mynode);
+             }
+            catch(std::exception& e)
+            {
+                std::cout << e.what() << std::endl;
+             }
     }
 
     const ib::entity_t & source_node = entities_map.find(std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0))->second;
