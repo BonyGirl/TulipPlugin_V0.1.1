@@ -10,6 +10,8 @@
 #ifndef TULIPTEST_ROUTEANALYSIS_H
 #define TULIPTEST_ROUTEANALYSIS_H
 
+namespace ib = infiniband;
+
 class RouteAnalysis: public tlp::Algorithm{
     PLUGININFORMATION("Real Routes",
                       "zz",
