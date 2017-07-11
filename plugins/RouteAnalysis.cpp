@@ -123,8 +123,10 @@ bool RouteAnalysis::run(){
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
-
+     
+        cout<<"Test1"<<endl;
     while(selections->hasNext()){
+            cout<<"Test0"<<endl;
         const tlp::node &mynode = selections->next();
         nodes_guid.push_back(mynode);
     }
