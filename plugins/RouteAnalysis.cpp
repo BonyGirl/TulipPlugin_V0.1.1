@@ -187,7 +187,7 @@ bool RouteAnalysis::run(){
     }
 
     cout<<"tmp vector size: "<<tmp.size()<<endl;
-    cout<<tmp.back().guid<<endl;
+    cout<<tmp.back()->guid<<endl;
     cout<<"----------test source entity end---------------"<<endl;
     
     //Whether the target is HCE or not
