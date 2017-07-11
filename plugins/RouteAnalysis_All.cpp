@@ -118,8 +118,8 @@ unsigned int RouteAnalysis_All::count_hops(const tlp::node source_node, const tl
     const ib::entity_t * source_entity = getMyEntity(source_node,fabric);
     const ib::entity_t * target_entity = getMyEntity(target_node,fabric);
     
-    cout<<"Test source_entity guid: "source_entity->guid<<endl;
-    cout<<"Test target_entity guid: "target_entity->guid<<endl;
+    cout<<"Test source_entity guid: "<<source_entity->guid<<endl;
+    cout<<"Test target_entity guid: "<<target_entity->guid<<endl;
     cout<<"----------Test the source & target entities end------------"<<endl;
     
     //ib::lid_t target_lid = target_entity->lid();
@@ -264,7 +264,7 @@ bool RouteAnalysis_All::run(){
     tlp::Iterator<tlp::node> *selections = selectSource->getNodesEqualTo(true,NULL);
     const tlp::node mySource = selections->next();
 
-    cout<<"My Source ID: "mySource.id<<endl;
+    cout<<"My Source ID: "<<mySource.id<<endl;
     cout<<"-------------------mySource test end-----------------------"<<endl;
 
     const ib::entity_t * source_entity= getMyEntity(mySource,fabric);
