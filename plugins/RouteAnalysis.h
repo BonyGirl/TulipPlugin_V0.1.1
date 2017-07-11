@@ -24,6 +24,6 @@ public:
 
     bool run();
     
-    const ib::entity_t * RouteAnalysis::getMyEntity(const tlp::node node,ib::tulip_fabric_t * const fabric);
+    const ib::entity_t * getMyEntity(const tlp::node node,ib::tulip_fabric_t * const fabric);
 };
 #endif //TULIPTEST_ROUTEANALYSIS_H
