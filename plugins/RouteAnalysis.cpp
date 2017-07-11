@@ -129,6 +129,7 @@ bool RouteAnalysis::run(){
         nodes_guid.push_back(mynode);
     }
 
+        cout<<"Test Vector Size: "<<nodes_guid.size()<<endl;
     //const unsigned long long int key1 = std::stol((getGuid->getNodeStringValue(nodes_guid[0])).c_str(),NULL,0);
     //const unsigned long long int key2 = std::stol((getGuid->getNodeStringValue(nodes_guid[1])).c_str(),NULL,0);
 
