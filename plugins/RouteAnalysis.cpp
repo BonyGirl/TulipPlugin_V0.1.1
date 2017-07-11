@@ -265,7 +265,7 @@ bool RouteAnalysis::run(){
                             if (edge_itr != fabric->port_edges.end()) {
                                 const tlp::edge &edge = edge_itr->second;
                                 selectBool->setEdgeValue(edge, true);
-                                const ib::entity_t * node = const ib::entity_t * node = getMyEntity(graph->target(edge),fabric);
+                                const ib::entity_t * node = getMyEntity(graph->target(edge),fabric);
                                 tmp.push_back(const_cast<ib::entity_t *> (node));
                                 count_hops++;
                             }
