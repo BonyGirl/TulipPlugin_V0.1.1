@@ -133,7 +133,7 @@ bool RouteAnalysis::run(){
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
     vector<tlp::node> nodes;
 
-    //tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
+    tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
     while(selections->hasNext()){
