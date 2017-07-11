@@ -179,6 +179,7 @@ bool RouteAnalysis::run(){
             const tlp::edge &e = Myedge->second;
             tmp.push_back(const_cast<ib::entity_t *> (getMyEntity(graph->target(e),fabric)));
         }else{
+            const tlp::edge &e = Myedge->second;
             tmp.push_back(const_cast<ib::entity_t *> (getMyEntity(graph->source(e),fabric)));
         }
     }else{
