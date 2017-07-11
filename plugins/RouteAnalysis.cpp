@@ -312,11 +312,7 @@ bool RouteAnalysis::run(){
            
     }
         
-        
-    if (pluginProgress) {
-        pluginProgress->setComment("Found path source and target");
-        pluginProgress->progress(4, STEPS);
-    }
+       
 
     if(pluginProgress)
     {
