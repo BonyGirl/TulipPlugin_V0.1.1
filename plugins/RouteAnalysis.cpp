@@ -142,7 +142,7 @@ bool RouteAnalysis::run(){
     }
     cout<<"Test the size of vector: "<<nodes.size()<<endl;
     cout<<"source_node_id: "<<nodes[0].id<<endl;
-    cout<<"target_guid: "<<nodes[0].id<<endl;
+    cout<<"target_node_id: "<<nodes[1].id<<endl;
     cout<<" -------------------------------- "<<endl;
 
     const ib::entity_t * source_entity = getMyEntity(nodes[0],fabric);
