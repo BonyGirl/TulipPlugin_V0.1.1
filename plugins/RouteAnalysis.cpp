@@ -133,7 +133,7 @@ bool RouteAnalysis::run(){
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
     vector<tlp::node> nodes;
 
-    tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
+    //tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
     const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
     while(selections->hasNext()){
@@ -161,7 +161,7 @@ bool RouteAnalysis::run(){
     cout<<"source_guid: "<<source_node.guid<<endl;
     cout<< "Get into the loop"<<endl;*/
 
-    ib::lid_t target_lid = target_entity->lid();
+    //ib::lid_t target_lid = target_entity->lid();
     std::vector<ib::entity_t *> tmp;
 
     // Use to count the number of hops;
@@ -202,8 +202,9 @@ bool RouteAnalysis::run(){
         selectBool->setEdgeValue(Myedge->second, true);
         if(graph->source(Myedge->second).id == nodes[0].id){
             const tlp::edge &e = Myedge->second;
-            const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->target(e))).c_str(),NULL,0))->second;
-            while(tmp.back()->guid!= real_target.guid) {
+            const ib::entity_t * real_target = getMyEntity(graph->source(e),fabric);
+            ib::lid_t target_lid = real_target->lid();
+            while(tmp.back()->guid!= real_target->guid) {
                 const ib::entity_t & temp = *tmp.back();
                 cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
                 for (
@@ -231,7 +232,7 @@ bool RouteAnalysis::run(){
                     }
                 }
             }
-            cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
+            cout<<"The "<<count_hops<<" step: "<<real_target->guid<<endl;
 
         }else{
             //find the only port in HCA
@@ -241,8 +242,9 @@ bool RouteAnalysis::run(){
             ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
             const tlp::edge &e = Myedge->second;
             selectBool->setEdgeValue(e, true);
-            const ib::entity_t & real_target = entities_map.find(std::stol((getGuid->getNodeStringValue(graph->source(e))).c_str(),NULL,0))->second;
-            while(tmp.back()->guid!= real_target.guid) {
+            const ib::entity_t * real_target = getMyEntity(graph->source(e),fabric);
+            ib::lid_t target_lid = real_target->lid();
+            while(tmp.back()->guid!= real_target->guid) {
                 const ib::entity_t & temp = *tmp.back();
                 cout<<"The "<<count_hops<<" step: "<<temp.guid<<endl;
                 for (
@@ -274,7 +276,7 @@ bool RouteAnalysis::run(){
                     }
                 }
             }
-            cout<<"The "<<count_hops<<" step: "<<real_target.guid<<endl;
+            cout<<"The "<<count_hops<<" step: "<<real_target->guid<<endl;
 
         }
 
@@ -284,7 +286,7 @@ bool RouteAnalysis::run(){
         cout<<"The total hops: "<<count_hops<<endl;
     }
     else{
-
+        ib::lid_t target_lid = target_entity->lid();
         while(tmp.back()->guid!= target_entity->guid) {
             const ib::entity_t *temp = tmp.back();
             cout<<"The "<<count_hops<<" step: "<<temp->guid<<endl;
