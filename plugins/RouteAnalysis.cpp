@@ -177,7 +177,7 @@ bool RouteAnalysis::run(){
         selectBool->setEdgeValue(Myedge->second, true);
         if(graph->source(Myedge->second).id == nodes[0].id){
             const tlp::edge &e = Myedge->second;
-            tmp.push_back(const_cast<ib::entity_t *> ( & entities_map.find(std::stol(getGuid->getNodeStringValue(graph->target(e)).c_str(),NULL,0))->second));
+            tmp.push_back(const_cast<ib::entity_t *> (getMyEntity(graph->target(e),fabric));
         }else{
             tmp.push_back(const_cast<ib::entity_t *> (source_entity));
         }
@@ -186,6 +186,10 @@ bool RouteAnalysis::run(){
         tmp.push_back(const_cast<ib::entity_t *> (source_entity));
     }
 
+    cout<<"tmp vector size: "<<tmp.size()<<endl;
+    cout<<tmp.back().guid<<endl;
+    cout<<"----------test source entity end---------------"<<endl;
+    
     //Whether the target is HCE or not
     if(getPortNum->getNodeValue(nodes[1])== 1){
         //find the only port in HCA
