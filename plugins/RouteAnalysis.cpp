@@ -298,13 +298,16 @@ bool RouteAnalysis::run(){
                     ++ritr
                     ) {
                 std::set<ib::lid_t>::const_iterator itr = ritr->second.find(target_lid);
+                cout<<"test loop"<<endl;
                 if (itr != ritr->second.end()) {
                     const ib::entity_t::portmap_t::const_iterator port_itr = temp->ports.find(ritr->first);
                     if (port_itr != temp->ports.end()) {
+                        cout<<"test port"<<endl;
                         const ib::port_t *const port = port_itr->second;
                         const ib::tulip_fabric_t::port_edges_t::const_iterator edge_itr = fabric->port_edges.find(
                                 const_cast<ib::port_t *>(port));
                         if (edge_itr != fabric->port_edges.end()) {
+                            cout<<"test edge"<<endl;
                             const tlp::edge &edge = edge_itr->second;
                             //setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                             selectBool->setEdgeValue(edge, true);
