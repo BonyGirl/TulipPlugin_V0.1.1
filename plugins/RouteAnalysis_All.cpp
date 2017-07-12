@@ -68,13 +68,16 @@ const ib::entity_t * RouteAnalysis_All::getMyEntity(const tlp::node node,ib::tul
     return nullptr;
 }
 
-unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
+int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
                         std::vector<ib::entity_t *> &tmp, const ib::entity_t * real_target)
 {
-    unsigned int count = 0;
+    int count = 0;
+    bool find_next = false;
     ib::lid_t target_lid = real_target->lid();
+  
     while(tmp.back()->guid!= real_target->guid) {
         const ib::entity_t & temp = *tmp.back();
+      
         for (
                 ib::entity_t::routes_t::const_iterator
                         ritr = temp.get_routes().begin(),
@@ -94,10 +97,14 @@ unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tl
                         const ib::entity_t * entity = getMyEntity(graph->target(edge),fabric);
                         tmp.push_back(const_cast<ib::entity_t *> (entity));
                         count++;
+                        find_next = true;
                     }
                 }
             }
         }
+      
+        if(!find_next)
+        return -1;
     }
 
 
@@ -105,7 +112,7 @@ unsigned int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tl
 }
 
 
-unsigned int RouteAnalysis_All::count_hops(const tlp::node source_node, const tlp::node target_node,tlp::Graph * const graph){
+int RouteAnalysis_All::count_hops(const tlp::node source_node, const tlp::node target_node,tlp::Graph * const graph){
     //Get the fabric from the graph
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
 
@@ -125,7 +132,7 @@ unsigned int RouteAnalysis_All::count_hops(const tlp::node source_node, const tl
     //ib::lid_t target_lid = target_entity->lid();
     std::vector<ib::entity_t *> tmp;
 
-    unsigned int count = 0;
+    int count = 0;
     if(getPortNum->getNodeValue(source_node)==1){
         //find the only port in HCA
         const ib::entity_t::portmap_t::const_iterator Myport = source_entity->ports.begin();
@@ -155,7 +162,11 @@ unsigned int RouteAnalysis_All::count_hops(const tlp::node source_node, const tl
             const tlp::edge &e = Myedge->second;
             const ib::entity_t * real_target = getMyEntity(graph->target(e),fabric);
                     
-            count += help_count(fabric,graph,tmp,real_target);
+            int count_temp = help_count(fabric, graph, tmp, real_target);
+            if(count_temp == -1)
+              return -1;
+            else
+              count += count_temp;
 
 
         }else {
@@ -166,12 +177,20 @@ unsigned int RouteAnalysis_All::count_hops(const tlp::node source_node, const tl
             ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
             const tlp::edge &e = Myedge->second;
             const ib::entity_t * real_target = getMyEntity(graph->source(e),fabric);
-            count += help_count(fabric, graph, tmp, real_target);
+            int count_temp = help_count(fabric, graph, tmp, real_target);
+            if(count_temp == -1)
+              return -1;
+            else
+              count += count_temp;
         }
             count++;
     }
     else{
-        count += help_count(fabric, graph, tmp, target_entity);
+        int count_temp = help_count(fabric, graph, tmp, real_target);
+        if(count_temp == -1)
+          return -1;
+        else
+          count += count_temp;
 
     }
     return count;
@@ -276,7 +295,7 @@ bool RouteAnalysis_All::run(){
         }
         else
         {
-            const unsigned int &temp = count_hops(mySource,node,graph);
+            const int &temp = count_hops(mySource,node,graph);
             ibRealHop->setNodeValue(node, temp);
         }
     }
