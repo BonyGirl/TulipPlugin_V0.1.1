@@ -26,8 +26,8 @@ public:
 
     bool run();
     const ib::entity_t * getMyEntity(const tlp::node node,ib::tulip_fabric_t * const fabric);
-    unsigned int count_hops(tlp::node source_node, tlp::node target_node,tlp::Graph * const graph);
-    unsigned int help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
+    int count_hops(tlp::node source_node, tlp::node target_node,tlp::Graph * const graph);
+    int help_count(ib::tulip_fabric_t * const fabric, tlp::Graph * const graph,
                             std::vector<ib::entity_t *> &tmp, const ib::entity_t * real_target);
 };
 #endif //TULIPTEST_ROUTEANALYSIS_H
