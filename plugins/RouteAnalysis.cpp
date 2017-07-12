@@ -308,7 +308,7 @@ bool RouteAnalysis::run(){
                             const tlp::edge &edge = edge_itr->second;
                             //setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                             selectBool->setEdgeValue(edge, true);
-                            const ib::entity_t * node =  getMyEntity(graph->source(edge),fabric);
+                            const ib::entity_t * node =  getMyEntity(graph->target(edge),fabric);
                             tmp.push_back(const_cast<ib::entity_t *> (node));
                             count_hops++;
                         }
