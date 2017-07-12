@@ -186,7 +186,7 @@ int RouteAnalysis_All::count_hops(const tlp::node source_node, const tlp::node t
             count++;
     }
     else{
-        int count_temp = help_count(fabric, graph, tmp, real_target);
+        int count_temp = help_count(fabric, graph, tmp, target_entity);
         if(count_temp == -1)
           return -1;
         else
