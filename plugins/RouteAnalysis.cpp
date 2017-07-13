@@ -178,9 +178,11 @@ bool RouteAnalysis::run(){
         if(graph->source(Myedge->second).id == nodes[0].id){
             const tlp::edge &e = Myedge->second;
             tmp.push_back(const_cast<ib::entity_t *> (getMyEntity(graph->target(e),fabric)));
+            selectBool->setNodeValue(graph->target(e), true);
         }else{
             const tlp::edge &e = Myedge->second;
             tmp.push_back(const_cast<ib::entity_t *> (getMyEntity(graph->source(e),fabric)));
+            selectBool->setNodeValue(graph->source(e), true);
         }
     }else{
 
@@ -200,9 +202,9 @@ bool RouteAnalysis::run(){
         ib::tulip_fabric_t::port_edges_t::iterator Myedge = fabric->port_edges.find(Myport->second);
 
         selectBool->setEdgeValue(Myedge->second, true);
-        if(graph->source(Myedge->second).id == nodes[0].id){
+        if(graph->source(Myedge->second).id == nodes[1].id){
             const tlp::edge &e = Myedge->second;
-            const ib::entity_t * real_target = getMyEntity(graph->source(e),fabric);
+            const ib::entity_t * real_target = getMyEntity(graph->target(e),fabric);
             ib::lid_t target_lid = real_target->lid();
             while(tmp.back()->guid!= real_target->guid) {
                 const ib::entity_t & temp = *tmp.back();
@@ -225,6 +227,7 @@ bool RouteAnalysis::run(){
                                 const tlp::edge &edge = edge_itr->second;
                                 selectBool->setEdgeValue(edge, true);
                                 const ib::entity_t * node = getMyEntity(graph->target(edge),fabric);
+                                selectBool->setNodeValue(graph->target(edge), true);
                                 tmp.push_back(const_cast<ib::entity_t *> (node));
                                 count_hops++;
                             }
@@ -264,6 +267,7 @@ bool RouteAnalysis::run(){
                                     const_cast<ib::port_t *>(port));
                             if (edge_itr != fabric->port_edges.end()) {
                                 const tlp::edge &edge = edge_itr->second;
+                                selectBool->setNodeValue(graph->target(edge), true);
                                 selectBool->setEdgeValue(edge, true);
                                 const ib::entity_t * node = getMyEntity(graph->target(edge),fabric);
                                 tmp.push_back(const_cast<ib::entity_t *> (node));
@@ -312,6 +316,7 @@ bool RouteAnalysis::run(){
                             const tlp::edge &edge = edge_itr->second;
                             //setColor->setEdgeValue(edge, tlp::Color::SpringGreen);
                             selectBool->setEdgeValue(edge, true);
+                            selectBool->setNodeValue(graph->target(edge), true);
                             const ib::entity_t * node =  getMyEntity(graph->target(edge),fabric);
                             tmp.push_back(const_cast<ib::entity_t *> (node));
                             count_hops++;
