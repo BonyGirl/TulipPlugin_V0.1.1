@@ -127,7 +127,7 @@ vector<unsigned int> InfinibandAnalysis::nodes_map::tracePath(map<int, Infiniban
 }
 
 
-const tlp::node & InfinibandAnalysis::find_node(int id){
+const tlp::node & InfinibandAnalysis::find_node(unsigned int id){
      tlp::Iterator<tlp::node> *itnodes = graph->getNodes();
        
        while(itnodes->hasNext()){
