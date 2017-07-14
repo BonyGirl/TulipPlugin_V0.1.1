@@ -116,8 +116,10 @@ vector<unsigned int> InfinibandAnalysis::nodes_map::tracePath(map<int, Infiniban
        path.push_back(pos);
        cout<<"next step is: "<<distmap[pos]->getFrom()<<" ";
        pos = distmap[pos]->getFrom();
-       if(pos == src)
-           break;
+       if(pos == src){
+         path.push_back(pos);
+         break;
+       }
     }
     cout<<" "<<endl;
    
@@ -125,7 +127,17 @@ vector<unsigned int> InfinibandAnalysis::nodes_map::tracePath(map<int, Infiniban
 }
 
 
-
+const tlp::node & InfinibandAnalysis::find_node(int id){
+     tlp::Iterator<tlp::node> *itnodes = graph->getNodes();
+       
+       while(itnodes->hasNext()){
+          const tlp::node &node = itnodes->next();
+             if(node.id == id)
+                return node;  
+       }
+   
+   return nullptr;
+}
 
 
 bool InfinibandAnalysis::run()
@@ -281,6 +293,11 @@ bool InfinibandAnalysis::run()
                 selectBool->setNodeValue(node, true);
              }
           }
+       }
+       
+       for(int i = 0; i<mypath.size()-1; i++){
+          const tlp::edge &edge = graph->getEdges(find_node(mypath(i), find_node(mypath(i+1))));
+          selectBool->setEdgeValue(edge, true);
        }
     }
    
