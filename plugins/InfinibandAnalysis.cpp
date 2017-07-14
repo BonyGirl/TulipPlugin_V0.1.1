@@ -136,7 +136,8 @@ const tlp::node & InfinibandAnalysis::find_node(unsigned int id){
                 return node;  
        }
    
-   return NULL;
+    itnodes = graph->getNodes();
+    return itnodes->next();
 }
 
 
