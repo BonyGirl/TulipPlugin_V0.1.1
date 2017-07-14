@@ -86,6 +86,6 @@ public:
     };
 
     bool run();
-    tlp::node & find_node(int id);
+    const tlp::node & find_node(int id);
 };
 #endif //TULIPTEST_MAIN_H
