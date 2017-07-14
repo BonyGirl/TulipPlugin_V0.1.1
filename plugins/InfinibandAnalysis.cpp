@@ -136,7 +136,7 @@ const tlp::node & InfinibandAnalysis::find_node(unsigned int id){
                 return node;  
        }
    
-   return nullptr;
+   return NULL;
 }
 
 
