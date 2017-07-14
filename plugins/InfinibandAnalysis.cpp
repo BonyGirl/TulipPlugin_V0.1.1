@@ -295,13 +295,7 @@ bool InfinibandAnalysis::run()
              }
           }
        }
-       
-       for(int i = 0; i<mypath.size()-1; i++){
-          const tlp::node &source = find_node(mypath[i]);
-          const tlp::node &target = find_node(mypath[i+1]);
-          const tlp::edge &edge = graph->getEdges(source,target,NULL)[0];
-          selectBool->setEdgeValue(edge, true);
-       }
+      
     }
    
     if(pluginProgress)
