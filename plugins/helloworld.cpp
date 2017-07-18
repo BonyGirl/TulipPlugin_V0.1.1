@@ -174,55 +174,7 @@ bool HelloWorld::run()
     }
   }
   
-  //djistra implementation 
-  int dist[v];
-  bool visited[v];
-  for(int i =0;i<v;i++){
-    dist[i] = INT_MAX, visited[i]=false;
-  }
-  
-  dist[0]=0;
-  
-  for(int count=0;count<v-1;count++){
-    int u = HelloWorld::min_distance(dist,visited,v);
-    visited[u] = true;
-    
-    for (int i =0;i<v;i++){
-      if (!visited[i] && adjacent_matrix[u][i] && dist[u] != INT_MAX && (dist[u] + adjacent_matrix[u][i]) < dist[i])
-        dist[i] = dist[u] + adjacent_matrix[u][i];
-    }
-  }
-  
-  int min = 1;
-  int max = 1;
-  int avg = 1;
-  //Print Distance and find out the max and min numbers
-  for(int i = 0; i<v; i++){
-    std::max(max,dist[i]);
-    cout<<i<<": "<<dist[i]<<endl;
-  }
-  avg = (min+max)/2;
-  
-  tlp::IntegerProperty * ibHub = graph->getProperty<tlp::IntegerProperty>("ibHub");
-  assert(ibHub);
-  if(pluginProgress)
-  {
-    pluginProgress->setComment("Show the max min average steps");
-    pluginProgress->progress(5, STEPS);
-  }
-  
-  tlp::Iterator<tlp::node> *itnodes = graph->getNodes();
-  while(itnodes->hasNext()){
-        const tlp::node &node = itnodes->next();
-        const int &temp = dist[node.id];
-        //if(dist[node.id]==max)
-        //  ibHub->setNodeValue(node, 216);
-        //else if(dist[node.id]==1)
-        //  ibHub->setNodeValue(node, -216);
-        //else if(dist[node.id]==avg)
-        //  ibHub->setNodeValue(node, 0);
-        ibHub->setNodeValue(node, temp);
-  }
+  cout<<"Hello World!"<<endl;
 
   if(pluginProgress)
   {
