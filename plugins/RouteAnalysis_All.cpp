@@ -286,7 +286,6 @@ bool RouteAnalysis_All::run(){
     cout<<"My Source ID: "<<mySource.id<<endl;
     cout<<"-------------------mySource test end-----------------------"<<endl;
 
-    const ib::entity_t * source_entity= getMyEntity(mySource,fabric);
     while(other->hasNext()){
         const tlp::node &node = other->next();
         if(node.id == mySource.id){
