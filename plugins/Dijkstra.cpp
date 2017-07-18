@@ -16,6 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
+ * refine by Zhenzhen Liu on 6/21/17
  */
 
 #include <fstream>
