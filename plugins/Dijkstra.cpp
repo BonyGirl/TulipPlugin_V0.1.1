@@ -115,7 +115,7 @@ vector<unsigned int> Dijkstra::nodes_map::tracePath(map<int, Dijkstra::nodes_map
         path.push_back(pos);
         cout<<"next step is: "<<distmap[pos]->getFrom()<<" ";
         pos = distmap[pos]->getFrom();
-        if(pos == src){
+        if(pos == (unsigned int)src){
             path.push_back(pos);
             break;
         }
@@ -294,7 +294,7 @@ bool Dijkstra::run()
             }
         }
 
-        for(int i = 0; i<mypath.size()-1; i++){
+        for(unsigned int i = 0; i<mypath.size()-1; i++){
             const tlp::node &source = find_node(mypath[i]);
             tlp::Iterator<tlp::edge> *itedges = graph->getOutEdges(source);
             while(itedges->hasNext()){
