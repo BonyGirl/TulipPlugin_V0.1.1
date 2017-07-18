@@ -136,7 +136,8 @@ const tlp::node & Dijkstra::find_node(unsigned int id){
     }
 
     itnodes = graph->getNodes();
-    return itnodes->next();
+    const tlp::node &temp = itnodes->next();
+    return temp;
 }
 
 
