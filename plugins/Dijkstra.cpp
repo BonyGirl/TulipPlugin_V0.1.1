@@ -39,27 +39,31 @@
 using namespace tlp;
 using namespace std;
 
+
+namespace ib = infiniband;
+namespace ibp = infiniband::parser;
+
+
 /*PLUGIN(ImportInfinibandRoutes)*/
 PLUGIN(Dijkstra)
 
 static const char * paramHelp[] = {
-        // File to Open
-        HTML_HELP_OPEN() \
+  // File to Open
+  HTML_HELP_OPEN() \
   /*HTML_HELP_DEF( "type", "pathname")*/ \
   HTML_HELP_BODY() \
   "Hello World" \
   HTML_HELP_CLOSE()
 };
 
+
 Dijkstra::Dijkstra(tlp::PluginContext* context)
-        : tlp::Algorithm(context)
+: tlp::Algorithm(context)
 {
     addInParameter<std::string>("file::filename", paramHelp[0],"");
 
 }
 
-namespace ib = infiniband;
-namespace ibp = infiniband::parser;
 
 //Implementing min_distance
 int Dijkstra::nodes_map::min_distance(map<int, Dijkstra::nodes_map::myNode*> map1, bool visited[]){
