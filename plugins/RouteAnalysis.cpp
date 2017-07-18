@@ -129,12 +129,10 @@ bool RouteAnalysis::run(){
 
     //find the source and target nodes of the path
     BooleanProperty *selectBool = graph->getLocalProperty<BooleanProperty>("viewSelection");
-    StringProperty *getGuid = graph->getLocalProperty<StringProperty>("ibGuid");
     IntegerProperty *getPortNum = graph->getLocalProperty<IntegerProperty>("ibPortNum");
     vector<tlp::node> nodes;
 
     tlp::Iterator<tlp::node> *selections = selectBool->getNodesEqualTo(true,NULL);
-    const ib::fabric_t::entities_t &entities_map = fabric->get_entities();
 
     while(selections->hasNext()){
         const tlp::node &mynode = selections->next();
