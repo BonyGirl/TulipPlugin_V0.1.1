@@ -239,7 +239,7 @@ bool Dijkstra::run()
 
     while(selections->hasNext()){
         const node &mynode = selections->next();
-         if(path_id>1)
+         if(path_id>=1)
          {
            if(pluginProgress)
              pluginProgress->setError("More than one node are selected");
@@ -253,8 +253,6 @@ bool Dijkstra::run()
     nodes_map *graphAnalysis = new nodes_map(graph,v);
     //test first and then modify to select source by user
     map<int, Dijkstra::nodes_map::myNode*> mymap = graphAnalysis->dijkstra(path_node[0]);
-
-    int max = 1;
     
     //Print Distance and find out the max and min numbers
     for(int i = 0; i<v; i++){
