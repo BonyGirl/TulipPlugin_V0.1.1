@@ -239,6 +239,7 @@ bool Dijkstra::run()
 
     while(selections->hasNext()){
         const node &mynode = selections->next();
+      
          if(path_id>=1)
          {
            if(pluginProgress)
@@ -246,9 +247,17 @@ bool Dijkstra::run()
 
            return false;
          }
+      
         path_node[path_id++] = mynode.id;
     }
 
+    if(path_id == 0)
+    {
+      if(pluginProgress)
+        pluginProgress->setError("No node is selected");
+
+      return false;
+    }
 
     nodes_map *graphAnalysis = new nodes_map(graph,v);
     //test first and then modify to select source by user
