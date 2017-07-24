@@ -188,7 +188,6 @@ bool Dijkstra_Path::run()
     int path_node[2];
     path_node[0]=0;// Default source node is 0
     int path_id = 0;
-    bool found_path = false;
 
     while(selections->hasNext()){
         const node &mynode = selections->next();
