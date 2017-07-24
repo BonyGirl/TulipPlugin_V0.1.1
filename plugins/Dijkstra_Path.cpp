@@ -43,8 +43,8 @@ using namespace std;
 PLUGIN(Dijkstra_Path)
 
 static const char * paramHelp[] = {
-        // File to Open
-        HTML_HELP_OPEN() \
+  // File to Open
+  HTML_HELP_OPEN() \
   /*HTML_HELP_DEF( "type", "pathname")*/ \
   HTML_HELP_BODY() \
   "Hello World" \
@@ -141,41 +141,35 @@ bool Dijkstra_Path::run()
     assert(graph);
 
     static const size_t STEPS = 5;
+     //PluginProcess interacts with users as the plugin runs
     if(pluginProgress)
     {
         pluginProgress->showPreview(false);
         pluginProgress->setComment("Starting to Import Routes");
         pluginProgress->progress(0, STEPS);
     }
-
-    /**
-     * while this does not import
-     * nodes/edges, it imports properties
-     * for an existing fabric
-     */
-
-    ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
-    if(!fabric)
-    {
-        if(pluginProgress)
-            pluginProgress->setError("Unable find fabric. Make sure to preserve data when importing data.");
-
-        return false;
-    }
-
+        
     if(pluginProgress)
     {
-        pluginProgress->setComment("Found Fabric");
+        pluginProgress->setComment("Implementing Dijkstra's algorithm on the graph...");
         pluginProgress->progress(1, STEPS);
     }
 
-    /**
-     * calculate routes outbound
-     * from every port on the fabric
-     */
     if(pluginProgress)
     {
-        pluginProgress->setComment("Calculating Route oversubscription.");
+        pluginProgress->progress(2, STEPS);
+        pluginProgress->setComment("Finalizing the process..");
+    }
+
+    if(pluginProgress)
+    {
+        pluginProgress->setComment("Please wait..");
+        pluginProgress->progress(3, STEPS);
+    }
+
+    if(pluginProgress)
+    {
+        pluginProgress->setComment("Calculating the minimum distances..");
         pluginProgress->progress(4, STEPS);
     }
 
