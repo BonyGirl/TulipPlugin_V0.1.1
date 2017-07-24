@@ -186,16 +186,33 @@ bool Dijkstra_Path::run()
     tlp::Iterator<node> *selections = selectBool->getNodesEqualTo(true,NULL);
 
     int path_node[2];
-    path_node[1]=0;// Default source node is 0
+    path_node[0]=0;// Default source node is 0
     int path_id = 0;
     bool found_path = false;
 
     while(selections->hasNext()){
         const node &mynode = selections->next();
         path_node[path_id++] = mynode.id;
+        
+        //If more than two node are selected show the error
+        if(path_id > 2)
+        {
+           if(pluginProgress)
+           pluginProgress->setError("More than two node are selected");
+
+           return false;
+         }
+       
     }
 
-    if(path_id >1) found_path = true;
+    //If no node is selected show the error
+    if(path_id < 2)
+    {
+      if(pluginProgress)
+        pluginProgress->setError("Path not found");
+
+      return false;
+    }
 
     nodes_map *graphAnalysis = new nodes_map(graph,v);
     //test first and then modify to select source by user
