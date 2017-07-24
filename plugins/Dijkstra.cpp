@@ -146,78 +146,35 @@ bool Dijkstra::run()
     assert(graph);
 
     static const size_t STEPS = 5;
+     //PluginProcess interacts with users as the plugin runs
     if(pluginProgress)
     {
         pluginProgress->showPreview(false);
         pluginProgress->setComment("Starting to Import Routes");
         pluginProgress->progress(0, STEPS);
     }
-
-    /**
-     * while this does not import
-     * nodes/edges, it imports properties
-     * for an existing fabric
-     */
-
-    ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
-    if(!fabric)
-    {
-        if(pluginProgress)
-            pluginProgress->setError("Unable find fabric. Make sure to preserve data when importing data.");
-
-        return false;
-    }
-
+        
     if(pluginProgress)
     {
-        pluginProgress->setComment("Found Fabric");
+        pluginProgress->setComment("Implementing Dijkstra's algorithm on the graph...");
         pluginProgress->progress(1, STEPS);
-    }
-
-    /**
-     * Open file to read and import per type
-     */
-    std::string filename;
-
-    dataSet->get("file::filename", filename);
-    std::ifstream ifs(filename.c_str());
-    if(!ifs)
-    {
-        if(pluginProgress)
-            pluginProgress->setError("Unable open source file.");
-
-        return false;
     }
 
     if(pluginProgress)
     {
         pluginProgress->progress(2, STEPS);
-        pluginProgress->setComment("Parsing Routes.");
+        pluginProgress->setComment("Finalizing the process..");
     }
-
-    /*ibp::ibdiagnet_fwd_db parser;*/
-    /*if(!parser.parse(*fabric, ifs))
-    {
-      if(pluginProgress)
-        pluginProgress->setError("Unable parse routes file.");
-      return false;
-    }*/
 
     if(pluginProgress)
     {
-        pluginProgress->setComment("Parsing Routes complete.");
+        pluginProgress->setComment("Please wait..");
         pluginProgress->progress(3, STEPS);
     }
 
-    ifs.close();
-
-    /**
-     * calculate routes outbound
-     * from every port on the fabric
-     */
     if(pluginProgress)
     {
-        pluginProgress->setComment("Calculating Route oversubscription.");
+        pluginProgress->setComment("Calculating the minimum distances..");
         pluginProgress->progress(4, STEPS);
     }
 
