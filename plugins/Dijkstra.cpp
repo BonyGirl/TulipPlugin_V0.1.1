@@ -254,6 +254,8 @@ bool Dijkstra::run()
     //test first and then modify to select source by user
     map<int, Dijkstra::nodes_map::myNode*> mymap = graphAnalysis->dijkstra(path_node[0]);
     
+    int max = 1;
+  
     //Print Distance and find out the max and min numbers
     for(int i = 0; i<v; i++){
         max = std::max(max,mymap[i]->getDist());
