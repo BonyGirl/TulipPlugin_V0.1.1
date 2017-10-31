@@ -57,11 +57,7 @@ bool ImportInfinibandRoutes::run()
     pluginProgress->progress(0, STEPS);
   }
 
-  /**
-   * while this does not import
-   * nodes/edges, it imports properties
-   * for an existing fabric
-   */
+   //while this does not import nodes/edges, it imports properties for an existing fabric
 
   ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
   if(!fabric)
@@ -78,9 +74,8 @@ bool ImportInfinibandRoutes::run()
     pluginProgress->progress(1, STEPS);
   }
 
-  /**
-   * Open file to read and import per type
-   */
+  //Open file to read and import per type
+  
   std::string filename;
   
   dataSet->get("file::filename", filename);
@@ -116,10 +111,7 @@ bool ImportInfinibandRoutes::run()
 
   ifs.close();
       
-  /**
-   * calculate routes outbound
-   * from every port on the fabric
-   */
+  //calculate routes outbound from every port on the fabric
   tlp::IntegerProperty * ibRoutesOutbound = graph->getProperty<tlp::IntegerProperty >("ibRoutesOutbound");
   assert(ibRoutesOutbound);
 
@@ -129,14 +121,11 @@ bool ImportInfinibandRoutes::run()
     pluginProgress->progress(4, STEPS);
   }
 
-  for(
-    ib::fabric_t::entities_t::const_iterator
-    itr = fabric->get_entities().begin(),
-    eitr = fabric->get_entities().end();
-    itr != eitr;
-    ++itr
-  )
-  {
+  for( ib::fabric_t::entities_t::const_iterator
+       itr = fabric->get_entities().begin(),
+       eitr = fabric->get_entities().end();
+       itr != eitr;
+       ++itr){
     const ib::entity_t &entity = itr->second;
 
     for(
@@ -165,7 +154,7 @@ bool ImportInfinibandRoutes::run()
 
   if(pluginProgress)
   {
-    pluginProgress->setComment("Calculating Route oversubscription complete.");
+    pluginProgress->setComment("Calculating Route complete.");
     pluginProgress->progress(STEPS, STEPS);
   }
 
