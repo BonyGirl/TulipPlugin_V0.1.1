@@ -111,7 +111,7 @@ int RouteAnalysis_All::help_count(ib::tulip_fabric_t * const fabric, tlp::Graph 
     return count;
 }
 
-
+//Count the hops between target node and source node
 int RouteAnalysis_All::count_hops(const tlp::node source_node, const tlp::node target_node,tlp::Graph * const graph){
     //Get the fabric from the graph
     ib::tulip_fabric_t * const fabric = ib::tulip_fabric_t::find_fabric(graph, false);
@@ -196,7 +196,7 @@ int RouteAnalysis_All::count_hops(const tlp::node source_node, const tlp::node t
     return count;
 }
 
-
+//Tulip Plugin Main Function
 bool RouteAnalysis_All::run(){
     assert(graph);
 
@@ -229,9 +229,7 @@ bool RouteAnalysis_All::run(){
         pluginProgress->progress(1, STEPS);
     }
 
-    /**
-     * Open file to read and import per type
-     */
+    //Open file to read and import per type
     std::string filename;
 
     dataSet->get("file::filename", filename);
