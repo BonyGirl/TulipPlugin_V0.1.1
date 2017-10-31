@@ -79,7 +79,7 @@ int Dijkstra::nodes_map::min_distance(map<int, Dijkstra::nodes_map::myNode*> map
     return min_index;
 }
 
-
+//Dijkstra Algorithm 
 map<int,Dijkstra::nodes_map::myNode*> Dijkstra::nodes_map::dijkstra(int src) {
     map<int, Dijkstra::nodes_map::myNode*> distmap;
     bool visited[v];
@@ -107,6 +107,7 @@ map<int,Dijkstra::nodes_map::myNode*> Dijkstra::nodes_map::dijkstra(int src) {
     return distmap;
 }
 
+//Tracing back the path suggested by Dijkstra
 vector<unsigned int> Dijkstra::nodes_map::tracePath(map<int, Dijkstra::nodes_map::myNode*> distmap, int target, int src){
     cout<<"the destination is: "<<target<<endl;
     vector<unsigned int> path;
@@ -125,7 +126,7 @@ vector<unsigned int> Dijkstra::nodes_map::tracePath(map<int, Dijkstra::nodes_map
     return path;
 }
 
-
+//Implementing the method to find node from its id
 const tlp::node & Dijkstra::find_node(unsigned int id){
     tlp::Iterator<tlp::node> *itnodes = graph->getNodes();
 
@@ -140,12 +141,13 @@ const tlp::node & Dijkstra::find_node(unsigned int id){
     return temp;
 }
 
-
+//Tulip plugin main Function
 bool Dijkstra::run()
 {
     assert(graph);
 
     static const size_t STEPS = 5;
+  
      //PluginProcess interacts with users as the plugin runs
     if(pluginProgress)
     {
@@ -215,7 +217,7 @@ bool Dijkstra::run()
 
       return false;
     }
-
+  
     nodes_map *graphAnalysis = new nodes_map(graph,v);
     //test first and then modify to select source by user
     map<int, Dijkstra::nodes_map::myNode*> mymap = graphAnalysis->dijkstra(path_node[0]);
@@ -232,7 +234,7 @@ bool Dijkstra::run()
     cout<<""<<endl;
     std::vector<unsigned int> mypath;
 
-
+    //The attribute shows on the Tulip - ibHop
     tlp::IntegerProperty * ibHop = graph->getProperty<tlp::IntegerProperty>("ibHop");
     assert(ibHop);
 
